@@ -11,17 +11,17 @@
             <div class="form-group {{error.name ? 'has-error':''}}">
               <label for="name">Nom complet:</label>
               <input type="text" name="name" class="form-control" id="name">
-              {% if error.name %}<span class="help-block">{{error.name | first}}</span>{% endif %}
+              {% if error.name %}<span class="help-block" style="font-size:0.7em">{{error.name | first}}</span>{% endif %}
             </div>
             <div class="form-group {{error.cin ? 'has-error':''}}">
               <label for="cin">Numéro d'identification:</label>
               <input type="text" name="cin" class="form-control" id="cin">
-              {% if error.cin %}<span class="help-block">{{error.cin | first}}</span>{% endif %}
+              {% if error.cin %}<span class="help-block" style="font-size:0.7em">{{error.cin | first}}</span>{% endif %}
             </div>
             <div class="form-group {{error.num_tel ? 'has-error':''}}">
               <label for="num_tel">Numéro de téléphone:</label>
               <input type="text" name="num_tel" class="form-control" id="num_tel">
-              {% if error.num_tel %}<span class="help-block">{{error.num_tel | first}}</span>{% endif %}
+              {% if error.num_tel %}<span class="help-block" style="font-size:0.7em">{{error.num_tel | first}}</span>{% endif %}
             </div>
             <div class="form-group">
               <label for="type">Nature du dossier:&nbsp;</label>
@@ -31,12 +31,12 @@
             <div class="form-group {{error.email ? 'has-error':''}}">
               <label for="email">Adresse Email:</label>
               <input type="text" name="email" class="form-control" id="email" placeholder="your@domain.com">
-              {% if error.email %}<span class="help-block">{{error.email | first}}</span>{% endif %}
+              {% if error.email %}<span class="help-block" style="font-size:0.7em">{{error.email | first}}</span>{% endif %}
             </div>
             <div class="form-group {{error.password ? 'has-error':''}}">
               <label for="pwd">Mot de passe:</label>
               <input type="password" name="password" class="form-control" id="pwd">
-              {% if error.password %}<span class="help-block">{{error.password | first}}</span>{% endif %}
+              {% if error.password %}<span class="help-block" style="font-size:0.7em">{{error.password | first}}</span>{% endif %}
             </div>
             <br/>
             <div class="col-md-offset-4">
