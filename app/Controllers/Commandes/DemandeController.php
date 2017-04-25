@@ -24,10 +24,9 @@
         $user = User::find($demande['id_user']);
         $demande['username'] = $user['name'];
       }
-      foreach($demandes as $demande){
-        echo $demande['id_demande']." : ".$demande['nom']." , ".$demande['statut']." , ".$demande['username']."<br/>";
-      }
-      die();
+      $env = $this->view->getEnvironment();
+      $env->addGlobal('demandes',$demandes);
+      return $this->view->render($response,'cmd/test.twig');
     }
 
     public function getDemandesByUser($request,$response)
@@ -41,10 +40,41 @@
     }
     public function getDemandeDetails($request,$response)
     {
-      $demande = Demande::where('id_demande',$request->getAttribute('id'))->first();
+      $demande = Demande::find($request->getAttribute('id'));
       // var_dump($demande);
-      echo $demande['id_demande']." : ".$demande['nom']." , ".$demande['statut']." ,".$demande['details']."<br/>";
+      echo $demande['id']." : ".$demande['nom']." , ".$demande['statut']." ,".$demande['details']."<br/>";
       die();
     }
+
+    public function getAddDemande($request,$response)
+    {
+      
+    }
+    public function postAddDemande($request,$response)
+    {
+      //Validation
+            // $validation = $this->validator->validate($request,[
+            //   'nom'=> v::noWhitespace()->notEmpty(),
+            //   'details'=>v::notEmpty()->alpha(),
+            // ]);
+      //Checking the values
+            // if($validation->failed()){
+            //   return $response->withRedirect($this->router->pathFor('auth.signup'));
+            // }
+      //creating+rendering
+            // Demande::create([
+            //   'nom'=>'',
+            //   'details'=>'',
+            //   'statut'=>'',
+            //   'id_user'=>''
+            // ]);
+    }
+
+    public function getUpdateDetail($request,$response)
+    {
+      // $demande = Demande::find($request->getAttribute('id'));
+      die();
+    }
+
   }
 //{{ path_for('item', {'slug': item.slug}) }}

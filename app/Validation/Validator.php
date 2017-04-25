@@ -26,7 +26,7 @@
       return $this;
     }
 
-    public function failed($request)
+    public function failed()
     {
       return !empty($this->error);
     }

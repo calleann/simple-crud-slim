@@ -13,7 +13,9 @@
     protected $fillable =[
       'name',
       'email',
+      'num_tel',
+      'cin',
       'password',
-      'privilege'
+      'type'
     ];
   }

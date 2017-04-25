@@ -4,26 +4,45 @@
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
       <div class="panel panel-default">
-        <div class="panel-heading"><strong>Sign up</strong></div>
+        <div class="panel-heading"><strong>Inscription</strong></div>
         <div class="panel-body">
            <!-- {{error | json_encode }}  -->
           <form class="form-signup" action="{{path_for('auth.signup')}}" method="post">
-            <div class="form-group {{error.email ? 'has-error':''}}">
-              <label for="email">Email address:</label>
-              <input type="text" name="email" class="form-control" id="email" placeholder="your@domain.com">
-              {% if error.email %}<span class="help-block">{{error.email | first}}</span>{% endif %}
-            </div>
             <div class="form-group {{error.name ? 'has-error':''}}">
-              <label for="name">Name:</label>
+              <label for="name">Nom complet:</label>
               <input type="text" name="name" class="form-control" id="name">
               {% if error.name %}<span class="help-block">{{error.name | first}}</span>{% endif %}
             </div>
+            <div class="form-group {{error.cin ? 'has-error':''}}">
+              <label for="cin">Numéro d'identification:</label>
+              <input type="text" name="cin" class="form-control" id="cin">
+              {% if error.cin %}<span class="help-block">{{error.cin | first}}</span>{% endif %}
+            </div>
+            <div class="form-group {{error.num_tel ? 'has-error':''}}">
+              <label for="num_tel">Numéro de téléphone:</label>
+              <input type="text" name="num_tel" class="form-control" id="num_tel">
+              {% if error.num_tel %}<span class="help-block">{{error.num_tel | first}}</span>{% endif %}
+            </div>
+            <div class="form-group">
+              <label for="type">Nature du dossier:&nbsp;</label>
+              <label class="radio-inline"><input type="radio" name="type" value="construire" checked="checked">Permis construction</label>
+              <label class="radio-inline"><input type="radio" name="type" value="exploitation">Permis Exploitation</label>
+            </div>
+            <div class="form-group {{error.email ? 'has-error':''}}">
+              <label for="email">Adresse Email:</label>
+              <input type="text" name="email" class="form-control" id="email" placeholder="your@domain.com">
+              {% if error.email %}<span class="help-block">{{error.email | first}}</span>{% endif %}
+            </div>
             <div class="form-group {{error.password ? 'has-error':''}}">
-              <label for="pwd">Password:</label>
+              <label for="pwd">Mot de passe:</label>
               <input type="password" name="password" class="form-control" id="pwd">
               {% if error.password %}<span class="help-block">{{error.password | first}}</span>{% endif %}
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <br/>
+            <div class="col-md-offset-4">
+              <button type="submit" class="btn btn-primary">&nbsp;&nbsp;&nbsp;S'inscrire&nbsp;&nbsp;&nbsp;</button>
+            </div>
+
           </form>
         </div>
       </div>

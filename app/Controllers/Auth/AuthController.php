@@ -21,7 +21,7 @@
         if(password_verify($request->getParam('password'),$user->password))
         {
           $_SESSION['id'] = $user->id;
-          $_SESSION['privilege'] = $user->privilege;
+          $_SESSION['type'] = $user->type;
 
           return $response->withRedirect($this->router->pathFor('home'));
         }
@@ -37,22 +37,26 @@
       $validation = $this->validator->validate($request,[
         'email'=> v::noWhitespace()->notEmpty()->email()->emailAvailable(),
         'name'=>v::notEmpty()->alpha()->nameAvailable(),
+        'cin'=>v::noWhitespace()->notEmpty(),
+        'num_tel'=>v::noWhitespace()->notEmpty(),
         'password'=>v::noWhitespace()->notEmpty()
       ]);
-      if($validation->failed($request)){
+      if($validation->failed()){
         return $response->withRedirect($this->router->pathFor('auth.signup'));
       }
       User::create([
         'name'=>$request->getParam('name'),
         'email'=>$request->getParam('email'),
+        'num_tel'=>$request->getParam('num_tel'),
+        'cin'=>$request->getParam('cin'),
         'password'=>password_hash($request->getParam('password'),PASSWORD_DEFAULT),
-        'privilege'=>'user'
+        'type'=>$request->getParam('type')
       ]);
       return $response->withRedirect($this->router->pathFor('home'));
     }
     public function getSignout($request,$response){
       unset($_SESSION['id']);
-      unset($_SESSION['privilege']);
+      unset($_SESSION['type']);
       return $response->withRedirect($this->router->pathFor('home'));
     }
   }

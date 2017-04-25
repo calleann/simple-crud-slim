@@ -1,0 +1,11 @@
+{% extends 'templates/app.twig' %}
+
+{%block content%}
+  <div class="row">
+    <ul>
+      {% for demande in demandes %}
+        <li>{{demande.username}}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}
