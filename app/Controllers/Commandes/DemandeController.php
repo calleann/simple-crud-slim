@@ -48,7 +48,7 @@
 
     public function getAddDemande($request,$response)
     {
-      
+
     }
     public function postAddDemande($request,$response)
     {
@@ -73,6 +73,16 @@
     public function getUpdateDetail($request,$response)
     {
       // $demande = Demande::find($request->getAttribute('id'));
+      die();
+    }
+    public function getTestform($request,$response)
+    {
+      return $this->view->render($response,'cmd/test.twig');
+    }
+    public function postTestform($request,$response)
+    {
+      $files = $request->getUploadedFiles();
+      var_dump($files['test2']);
       die();
     }
 
