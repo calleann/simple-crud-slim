@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="/Slim/resources/css/navbar-fixed-side.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <title>Canvas</title>
+  </head>
+  <body>
+    {% include 'templates/partials/navigation.html.twig' %}
+    <div class="container" style="padding-top:70px">
+      <div class="row">
+        {% if id %}
+          <div class="col-lg-2">
+            <ul id="sidebar" class="nav nav-stacked affix">
+              <li><a href="{{path_for('demande.test')}}">Dossier En ligne:Test</a></li>
+              <!-- <li><a href="{{path_for('demande.test2',{'id': id,'type':type}) }}">test</a></li> -->
+              <li><a href="{{path_for('demande.submit')}}">Soumettre votre dossier</a></li>
+              <li><a href="#">GitHub</a></li>
+              <li><a href="#">In1</a></li>
+              <li><a href="#">TechMeMe</a></li>
+            </ul>
+          </div>
+        {% endif %}
+        <div class="{{id ? 'col-lg-10':'col-lg-12'}}">
+          {%block content %}{% endblock %}
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

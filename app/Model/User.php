@@ -1,6 +1,6 @@
 <?php
 
-  namespace Test\Models;
+  namespace Test\Model;
 
   use Illuminate\Database\Eloquent\Model;
 
@@ -18,4 +18,9 @@
       'password',
       'type'
     ];
+
+    public function dossier()
+    {
+      return $this->hasOne('Test\Model\Dossier');
+    }
   }

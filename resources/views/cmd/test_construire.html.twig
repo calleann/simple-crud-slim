@@ -1,0 +1,309 @@
+{% extends 'templates/app.html.twig' %}
+
+{%block content%}
+      <div class="col-lg-12">
+        {% if count == 0 %}
+          {% if statut == "nouveau"%}
+              <div class="row">
+                <div class="alert alert-info" role="alert"><p>Vous avez saisi tous les documents.Si vous souhaitez soumettre votre dosier,allez à "soumettre votre dossier" ou cliquez <a href="{{path_for("demande.submit")}}"><strong>ici</strong></a>.</p></div>
+              </div>
+          {% else %}
+              <div class="row">
+                <div class="alert alert-success" role="alert"><p>Vous avez envoyé votre dossier.</p></div>
+              </div>
+          {% endif %}
+        {% endif %}
+        <div class="row">
+          <div class="panel panel-default">
+          <div class="panel-heading"><strong>Dossier Construire</strong></div>
+          <div class="panel-body">
+                     <!-- {{error | json_encode }}
+                    {{dossier_fils | json_encode }} -->
+                    {{count | json_encode }}
+          <table class="table table-bordered table-responsive">
+            <tbody>
+              <form class="form-signin" action="{{path_for('demande.test')}}" method="post" enctype="multipart/form-data">
+
+                <tr class="{{dossier_fils.demande_autorisation ? 'bg-success':''}} {{error.demande_autorisation ? 'bg-danger':''}}">
+                  <td width="75%">
+                      <label for="demande_autorisation">fichier Demande d'autorisation:</label><br>
+                      {% if dossier_fils.demande_autorisation is not empty %}
+                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.demande_autorisation}}">consulter</a></p>
+                        <span class='label label-success'>Complet</span>
+                      {% endif %}
+                      {% if error.demande_autorisation %}
+                        <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                  </td>
+                  <td width="25%" align="center">
+                    <label class="btn btn-default" {{statut == "nouveau" ? '':'disabled'}} for="demande_autorisation">
+                      <input id="demande_autorisation" type="file" name="test[demande_autorisation]" style="display:none;" {{statut == "nouveau" ? '':'disabled'}} onchange="$('#upload-file-info-1').html($(this).val());">
+                      Charger ici
+                    </label>
+                    <span class='label label-default' id="upload-file-info-1"></span>
+                  </td>
+                </tr>
+
+                <tr class="{{dossier_fils.propriete ? 'bg-success':''}} {{error.propriete ? 'bg-danger':''}}">
+                  <td width="75%">
+                      <label for="propriete">fichier Certificat de propriété:</label><br>
+                      {% if dossier_fils.propriete is not empty %}
+                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.propriete}}">consulter</a></p>
+                        <span class='label label-success'>Complet</span>
+                      {% endif %}
+                      {% if error.propriete %}
+                        <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                  </td>
+                  <td width="25%" align="center">
+                    <label class="btn btn-default" {{statut == "nouveau" ? '':'disabled'}} for="propriete">
+                        <input id="propriete" type="file" name="test[propriete]" style="display:none;" {{statut == "nouveau" ? '':'disabled'}} onchange="$('#upload-file-info-2').html($(this).val());">
+                         Charger ici
+                    </label>
+                    <span class='label label-default' id="upload-file-info-2"></span>
+                  </td>
+                </tr>
+
+                <tr class="{{dossier_fils.plan_topographique ? 'bg-success':''}} {{error.plan_topographique ? 'bg-danger':''}}">
+                  <td width="75%">
+                      <label for="plan_topographique">fichier Plan topographique:</label><br>
+                      {% if dossier_fils.plan_topographique is not empty %}
+                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.plan_topographique}}">consulter</a></p>
+                        <span class='label label-success'>Complet</span>
+                      {% endif %}
+                      {% if error.plan_topographique %}
+                        <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                  </td>
+                  <td width="25%" align="center">
+                    <label class="btn btn-default" {{statut == "nouveau" ? '':'disabled'}} for="plan_topographique">
+                        <input id="plan_topographique" type="file" name="test[plan_topographique]" style="display:none;" {{statut == "nouveau" ? '':'disabled'}} onchange="$('#upload-file-info-3').html($(this).val());">
+                         Charger ici
+                    </label>
+                    <span class='label label-default' id="upload-file-info-3"></span>
+                  </td>
+                </tr>
+
+                <tr class="{{dossier_fils.maitrise_oeuvre ? 'bg-success':''}} {{error.maitrise_oeuvre ? 'bg-danger':''}}">
+                  <td width="75%">
+                      <label for="maitrise_oeuvre">fichier Maîtrises d'oeuvres:</label><br>
+                      {% if dossier_fils.maitrise_oeuvre is not empty %}
+                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.maitrise_oeuvre}}">consulter</a></p>
+                        <span class='label label-success'>Complet</span>
+                      {% endif %}
+                      {% if error.maitrise_oeuvre %}
+                        <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                  </td>
+                  <td width="25%" align="center">
+                    <label class="btn btn-default" {{statut == "nouveau" ? '':'disabled'}} for="maitrise_oeuvre">
+                        <input id="maitrise_oeuvre" type="file" name="test[maitrise_oeuvre]" style="display:none;" {{statut == "nouveau" ? '':'disabled'}} onchange="$('#upload-file-info-4').html($(this).val());">
+                         Charger ici
+                    </label>
+                    <span class='label label-default' id="upload-file-info-4"></span>
+                  </td>
+                </tr>
+
+                <tr class="{{dossier_fils.plan_structure ? 'bg-success':''}} {{error.plan_structure ? 'bg-danger':''}}">
+                  <td width="75%">
+                      <label for="plan_structure">fichier Plan de structure:</label><br>
+                      {% if dossier_fils.plan_structure is not empty %}
+                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.plan_structure}}">consulter</a></p>
+                        <span class='label label-success'>Complet</span>
+                      {% endif %}
+                      {% if error.plan_structure %}
+                        <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                  </td>
+                  <td width="25%" align="center">
+                    <label class="btn btn-default" {{statut == "nouveau" ? '':'disabled'}} for="plan_structure">
+                        <input id="plan_structure" type="file" name="test[plan_structure]" style="display:none;" {{statut == "nouveau" ? '':'disabled'}} onchange="$('#upload-file-info-5').html($(this).val());">
+                         Charger ici
+                    </label>
+                    <span class='label label-default' id="upload-file-info-5"></span>
+                  </td>
+                </tr>
+
+                <tr class="{{dossier_fils.note_pressentation ? 'bg-success':''}} {{error.note_pressentation ? 'bg-danger':''}}">
+                  <td width="75%">
+                      <label for="note_pressentation">fichier Note de présentation:</label><br>
+                      {% if dossier_fils.note_pressentation is not empty %}
+                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.note_pressentation}}">consulter</a></p>
+                        <span class='label label-success'>Complet</span>
+                      {% endif %}
+                      {% if error.note_pressentation %}
+                        <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                  </td>
+                  <td width="25%" align="center">
+                    <label class="btn btn-default" {{statut == "nouveau" ? '':'disabled'}} for="note_pressentation">
+                        <input id="note_pressentation" type="file" name="test[note_pressentation]" style="display:none;" {{statut == "nouveau" ? '':'disabled'}} onchange="$('#upload-file-info-6').html($(this).val());">
+                         Charger ici
+                    </label>
+                    <span class='label label-default' id="upload-file-info-6"></span>
+                  </td>
+                </tr>
+
+                <tr class="{{dossier_fils.architecte ? 'bg-success':''}} {{error.architecte ? 'bg-danger':''}}">
+                  <td width="75%">
+                      <label for="architecte">fichier Attestation Architecte:</label><br>
+                      {% if dossier_fils.architecte is not empty %}
+                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.architecte}}">consulter</a></p>
+                        <span class='label label-success'>Complet</span>
+                      {% endif %}
+                      {% if error.architecte %}
+                        <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                  </td>
+                  <td width="25%" align="center">
+                    <label class="btn btn-default" {{statut == "nouveau" ? '':'disabled'}} for="architecte">
+                        <input id="architecte" type="file" name="test[architecte]" style="display:none;" {{statut == "nouveau" ? '':'disabled'}} onchange="$('#upload-file-info-7').html($(this).val());">
+                         Charger ici
+                    </label>
+                    <span class='label label-default' id="upload-file-info-7"></span>
+                  </td>
+                </tr>
+
+                <tr class="{{dossier_fils.fiche_technique ? 'bg-success':''}} {{error.fiche_technique ? 'bg-danger':''}}">
+                  <td width="75%">
+                      <label for="fiche_technique">fichier fiche technique:</label><br>
+                      {% if dossier_fils.fiche_technique is not empty %}
+                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.fiche_technique}}">consulter</a></p>
+                        <span class='label label-success'>Complet</span>
+                      {% endif %}
+                      {% if error.fiche_technique %}
+                        <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                  </td>
+                  <td width="25%" align="center">
+                    <label class="btn btn-default" {{statut == "nouveau" ? '':'disabled'}} for="fiche_technique">
+                      <input id="fiche_technique" type="file" name="test[fiche_technique]" style="display:none;" {{statut == "nouveau" ? '':'disabled'}} onchange="$('#upload-file-info-8').html($(this).val());">
+                      Charger ici
+                    </label>
+                    <span class='label label-default' id="upload-file-info-8"></span>
+                  </td>
+                </tr>
+
+                <tr class="{{dossier_fils.bureau_controle ? 'bg-success':''}} {{error.bureau_controle ? 'bg-danger':''}}">
+                  <td width="75%">
+                      <label for="bureau_controle">fichier Attestation Bureau de controle:</label><br>
+                      {% if dossier_fils.bureau_controle is not empty %}
+                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.bureau_controle}}">consulter</a></p>
+                        <span class='label label-success'>Complet</span>
+                      {% endif %}
+                      {% if error.bureau_controle %}
+                        <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                  </td>
+                  <td width="25%" align="center">
+                    <label class="btn btn-default" {{statut == "nouveau" ? '':'disabled'}} for="bureau_controle">
+                        <input id="bureau_controle" type="file" name="test[bureau_controle]" style="display:none;" {{statut == "nouveau" ? '':'disabled'}} onchange="$('#upload-file-info-9').html($(this).val());">
+                         Charger ici
+                    </label>
+                    <span class='label label-default' id="upload-file-info-9"></span>
+                  </td>
+                </tr>
+
+                <tr class="{{dossier_fils.notice_securite ? 'bg-success':''}} {{error.notice_securite ? 'bg-danger':''}}">
+                  <td width="75%">
+                      <label for="notice_securite">fichier Notice de sécurité incendie:</label><br>
+                      {% if dossier_fils.notice_securite is not empty %}
+                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.notice_securite}}">consulter</a></p>
+                        <span class='label label-success'>Complet</span>
+                      {% endif %}
+                      {% if error.notice_securite %}
+                        <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                  </td>
+                  <td width="25%" align="center">
+                    <label class="btn btn-default" {{statut == "nouveau" ? '':'disabled'}} for="notice_securite">
+                        <input id="notice_securite" type="file" name="test[notice_securite]" style="display:none;" {{statut == "nouveau" ? '':'disabled'}} onchange="$('#upload-file-info-10').html($(this).val());">
+                         Charger ici
+                    </label>
+                    <span class='label label-default' id="upload-file-info-10"></span>
+                  </td>
+                </tr>
+
+                <tr class="{{dossier_fils.contrat ? 'bg-success':''}} {{error.contrat ? 'bg-danger':''}}">
+                  <td width="75%">
+                      <label for="contrat">fichier Contrat:</label><br>
+                      {% if dossier_fils.contrat is not empty %}
+                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.contrat}}">consulter</a></p>
+                        <span class='label label-success'>Complet</span>
+                      {% endif %}
+                      {% if error.contrat %}
+                        <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                  </td>
+                  <td width="25%" align="center">
+                    <label class="btn btn-default" {{statut == "nouveau" ? '':'disabled'}} for="contrat">
+                        <input id="contrat" type="file" name="test[contrat]" style="display:none;" {{statut == "nouveau" ? '':'disabled'}} onchange="$('#upload-file-info-11').html($(this).val());">
+                         Charger ici
+                    </label>
+                    <span class='label label-default' id="upload-file-info-11"></span>
+                  </td>
+                </tr>
+
+                <tr class="{{dossier_fils.frais_autorisation ? 'bg-success':''}} {{error.frais_autorisation ? 'bg-danger':''}}">
+                  <td width="75%">
+                      <label for="frais_autorisation">fichier frais autorisation:</label><br>
+                      {% if dossier_fils.frais_autorisation is not empty %}
+                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.frais_autorisation}}">consulter</a></p>
+                        <span class='label label-success'>Complet</span>
+                      {% endif %}
+                      {% if error.frais_autorisation %}
+                        <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                  </td>
+                  <td width="25%" align="center">
+                    <label class="btn btn-default" {{statut == "nouveau" ? '':'disabled'}} for="frais_autorisation">
+                        <input id="frais_autorisation" type="file" name="test[frais_autorisation]" style="display:none;" {{statut == "nouveau" ? '':'disabled'}} onchange="$('#upload-file-info-12').html($(this).val());">
+                         Charger ici
+                    </label>
+                    <span class='label label-default' id="upload-file-info-12"></span>
+                  </td>
+                </tr>
+
+                <tr class="{{dossier_fils.fiche_sapeurs ? 'bg-success':''}} {{error.fiche_sapeurs ? 'bg-danger':''}}">
+                  <td width="75%">
+                      <label for="fiche_sapeurs">fichier fiche des sapeurs:</label><br>
+                      {% if dossier_fils.fiche_sapeurs is not empty %}
+                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.fiche_sapeurs}}">consulter</a></p>
+                        <span class='label label-success'>Complet</span>
+                      {% endif %}
+                      {% if error.fiche_sapeurs %}
+                        <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                  </td>
+                  <td width="25%" align="center">
+                    <label class="btn btn-default" {{statut == "nouveau" ? '':'disabled'}} for="fiche_sapeurs">
+                        <input id="fiche_sapeurs" type="file" name="test[fiche_sapeurs]" style="display:none;" {{statut == "nouveau" ? '':'disabled'}} onchange="$('#upload-file-info-13').html($(this).val());">
+                         Charger ici
+                    </label>
+                    <span class='label label-default' id="upload-file-info-13"></span>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" align="center">
+                    <button type="submit" class="btn btn-primary" {{statut == "nouveau" ? '':'disabled'}}>Submit</button>
+                  </td>
+                </tr>
+            </form>
+            </tbody>
+          </table>
+          </div>
+        </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+        var count = {{count}};
+        console.log(count);
+        $(document).ready(function(){
+          $("table tbody tr").click(function(){
+            $(this).find(".label-danger").each(function(){
+              $(this).hide("slow");
+            });
+          });
+        });
+      </script>
+{% endblock %}

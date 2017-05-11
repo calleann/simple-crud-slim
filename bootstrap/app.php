@@ -45,6 +45,8 @@
     return new \Test\Validation\Validator;
   };
   $app->add(new \Test\Middleware\ValidationErrorMiddleware($container));
+  $app->add(new \Test\Middleware\UserSettingMiddleware($container));
+
   // $app->add(new \Test\Middleware\EmailcheckMiddleware($container));
 
   //dump the controllers into the container

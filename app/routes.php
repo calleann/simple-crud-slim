@@ -15,9 +15,12 @@
     $app->get('/auth/signout','AuthController:getSignout')->setName('auth.signout');
 
     // //user commandes
-    // $app->get('/test','DemandeController:getAllDemandes');
-    // $app->get('/test2/{id}','DemandeController:getDemandesByUser');
+    $app->get('/test','DemandeController:getTest');
+    $app->get('/test2/{id}','DemandeController:getTest2')->setName('demande.test2');
     // $app->get('/test3/{id}','DemandeController:getDemandeDetails');
 
     $app->get('/test4','DemandeController:getTestform')->setName('demande.test');
     $app->post('/test4','DemandeController:postTestform');
+
+    $app->get('/test5','DemandeController:getTestSoumettre')->setName('demande.submit');
+    $app->post('/test5','DemandeController:postTestSoumettre');

@@ -1,0 +1,14 @@
+
+{% extends 'templates/app.html.twig' %}
+
+{%block content%}
+<div class="col-lg-12 well">
+  {% if id and type %}
+    <p>Numéro de votre dossier: {{id}}</p>
+    <p>Type de votre dossier: {{type}}</p>
+  {% else %}
+    <p>Veuillez se connecter:</p>
+    <a href="{{path_for('auth.signin')}}">Se connecter</p>
+  {% endif %}
+</div>
+{% endblock %}

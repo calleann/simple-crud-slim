@@ -1,4 +1,5 @@
 vendor/
+dossiers/
 log/*
 cache/*
 cheatsheet.txt

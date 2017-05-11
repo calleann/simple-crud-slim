@@ -2,7 +2,7 @@
 
 namespace Test\Validation\Rules;
 
-use Test\Models\User;
+use Test\Model\User;
 use Respect\Validation\Rules\AbstractRule;
 
 

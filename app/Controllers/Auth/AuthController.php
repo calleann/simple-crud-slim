@@ -1,7 +1,11 @@
 <?php
   namespace Test\Controllers\Auth;
   use Test\Controllers\Controller;
-  use Test\Models\User;
+  use Test\Model\User;
+  use Test\Model\Demande;
+  use Test\Model\Dossier;
+  use Test\Model\dossier_construire;
+  use Test\Model\dossier_exploitation;
   use Respect\Validation\Validator as v;
 
   /**
@@ -11,7 +15,9 @@
   {
     public function getSignin($request,$response)
     {
-        return $this->view->render($response,'auth/signin.twig');
+      if(isset($_SESSION['id']) && isset($_SESSION['type']))
+        return $response->withRedirect($this->router->pathFor('home'));
+      return $this->view->render($response,'auth/signin.html.twig');
     }
     public function postSignin($request,$response)
     {
@@ -30,7 +36,9 @@
     }
     public function getSignup($request,$response)
     {
-        return $this->view->render($response,'auth/signup.twig');
+      if(isset($_SESSION['id']))
+        return $response->withRedirect($this->router->pathFor('home'));
+      return $this->view->render($response,'auth/signup.html.twig');
     }
     public function postSignup($request,$response)
     {
@@ -55,12 +63,35 @@
       $dir = __DIR__.'/../../../dossiers/'.$user['id'];
       //echo $dir;
       mkdir($dir,0777,true);
+      Demande::create([
+        'Num_dossier'=>$user['id'],
+        'statut'=>"nouveau"
+      ]);
+      $dossier = Dossier::create([
+        'statut'=>"nouveau"
+      ]);
+      if($request->getParam('type') === "construire"){
+        $dossier_construire = dossier_construire::create([
+          'column_construire'=>'ok'
+        ]);
+        $dossier_construire->dossier()->save($dossier);
+      }
+      if($request->getParam('type') === "exploitation"){
+        $dossier_exploitation = dossier_exploitation::create([
+          'column_exploitation'=>'ok'
+        ]);
+        $dossier_exploitation->dossier()->save($dossier);
+      }
+      $dossier->user()->associate($user);
+      $dossier->save();
+      $_SESSION['id'] = $user->id;
+      $_SESSION['type'] = $user->type;
       //die();
       return $response->withRedirect($this->router->pathFor('home'));
     }
     public function getSignout($request,$response){
       unset($_SESSION['id']);
       unset($_SESSION['type']);
-      return $response->withRedirect($this->router->pathFor('home'));
+      return $response->withRedirect($this->router->pathFor('auth.signin'));
     }
   }
