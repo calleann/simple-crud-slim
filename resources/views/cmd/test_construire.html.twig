@@ -28,7 +28,7 @@
                   <td width="75%">
                       <label for="demande_autorisation">fichier Demande d'autorisation:</label><br>
                       {% if dossier_fils.demande_autorisation is not empty %}
-                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.demande_autorisation}}">consulter</a></p>
+                        <p><a target="_blank"  href="/../../dossiers/{{id}}/{{dossier_fils.demande_autorisation}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
                       {% if error.demande_autorisation %}
@@ -48,7 +48,7 @@
                   <td width="75%">
                       <label for="propriete">fichier Certificat de propriété:</label><br>
                       {% if dossier_fils.propriete is not empty %}
-                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.propriete}}">consulter</a></p>
+                        <p><a target="_blank"  href="/../../dossiers/{{id}}/{{dossier_fils.propriete}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
                       {% if error.propriete %}
@@ -68,7 +68,7 @@
                   <td width="75%">
                       <label for="plan_topographique">fichier Plan topographique:</label><br>
                       {% if dossier_fils.plan_topographique is not empty %}
-                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.plan_topographique}}">consulter</a></p>
+                        <p><a target="_blank"  href="/../../dossiers/{{id}}/{{dossier_fils.plan_topographique}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
                       {% if error.plan_topographique %}
@@ -88,7 +88,7 @@
                   <td width="75%">
                       <label for="maitrise_oeuvre">fichier Maîtrises d'oeuvres:</label><br>
                       {% if dossier_fils.maitrise_oeuvre is not empty %}
-                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.maitrise_oeuvre}}">consulter</a></p>
+                        <p><a target="_blank"  href="/../../dossiers/{{id}}/{{dossier_fils.maitrise_oeuvre}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
                       {% if error.maitrise_oeuvre %}
@@ -108,7 +108,7 @@
                   <td width="75%">
                       <label for="plan_structure">fichier Plan de structure:</label><br>
                       {% if dossier_fils.plan_structure is not empty %}
-                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.plan_structure}}">consulter</a></p>
+                        <p><a target="_blank"  href="/../../dossiers/{{id}}/{{dossier_fils.plan_structure}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
                       {% if error.plan_structure %}
@@ -128,7 +128,7 @@
                   <td width="75%">
                       <label for="note_pressentation">fichier Note de présentation:</label><br>
                       {% if dossier_fils.note_pressentation is not empty %}
-                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.note_pressentation}}">consulter</a></p>
+                        <p><a target="_blank"  href="/../../dossiers/{{id}}/{{dossier_fils.note_pressentation}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
                       {% if error.note_pressentation %}
@@ -148,7 +148,7 @@
                   <td width="75%">
                       <label for="architecte">fichier Attestation Architecte:</label><br>
                       {% if dossier_fils.architecte is not empty %}
-                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.architecte}}">consulter</a></p>
+                        <p><a target="_blank"  href="/../../dossiers/{{id}}/{{dossier_fils.architecte}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
                       {% if error.architecte %}
@@ -168,7 +168,7 @@
                   <td width="75%">
                       <label for="fiche_technique">fichier fiche technique:</label><br>
                       {% if dossier_fils.fiche_technique is not empty %}
-                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.fiche_technique}}">consulter</a></p>
+                        <p><a target="_blank"  href="/../../dossiers/{{id}}/{{dossier_fils.fiche_technique}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
                       {% if error.fiche_technique %}
@@ -188,7 +188,7 @@
                   <td width="75%">
                       <label for="bureau_controle">fichier Attestation Bureau de controle:</label><br>
                       {% if dossier_fils.bureau_controle is not empty %}
-                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.bureau_controle}}">consulter</a></p>
+                        <p><a target="_blank"  href="/../../dossiers/{{id}}/{{dossier_fils.bureau_controle}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
                       {% if error.bureau_controle %}
@@ -208,7 +208,7 @@
                   <td width="75%">
                       <label for="notice_securite">fichier Notice de sécurité incendie:</label><br>
                       {% if dossier_fils.notice_securite is not empty %}
-                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.notice_securite}}">consulter</a></p>
+                        <p><a target="_blank"  href="/../../dossiers/{{id}}/{{dossier_fils.notice_securite}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
                       {% if error.notice_securite %}
@@ -228,7 +228,7 @@
                   <td width="75%">
                       <label for="contrat">fichier Contrat:</label><br>
                       {% if dossier_fils.contrat is not empty %}
-                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.contrat}}">consulter</a></p>
+                        <p><a target="_blank"  href="/../../dossiers/{{id}}/{{dossier_fils.contrat}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
                       {% if error.contrat %}
@@ -248,7 +248,7 @@
                   <td width="75%">
                       <label for="frais_autorisation">fichier frais autorisation:</label><br>
                       {% if dossier_fils.frais_autorisation is not empty %}
-                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.frais_autorisation}}">consulter</a></p>
+                        <p><a target="_blank"  href="/../../dossiers/{{id}}/{{dossier_fils.frais_autorisation}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
                       {% if error.frais_autorisation %}
@@ -268,7 +268,7 @@
                   <td width="75%">
                       <label for="fiche_sapeurs">fichier fiche des sapeurs:</label><br>
                       {% if dossier_fils.fiche_sapeurs is not empty %}
-                        <p><a target="_blank"  href="/Slim/dossiers/{{id}}/{{dossier_fils.fiche_sapeurs}}">consulter</a></p>
+                        <p><a target="_blank"  href="/../../dossiers/{{id}}/{{dossier_fils.fiche_sapeurs}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
                       {% if error.fiche_sapeurs %}
