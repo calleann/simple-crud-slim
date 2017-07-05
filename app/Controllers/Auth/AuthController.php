@@ -28,7 +28,7 @@
         {
           $_SESSION['id'] = $user->id;
           $_SESSION['type'] = $user->type;
-
+          $_SESSION['name'] = $user->name;
           return $response->withRedirect($this->router->pathFor('home'));
         }
       }
@@ -45,6 +45,7 @@
       $validation = $this->validator->validate($request,[
         'email'=> v::noWhitespace()->notEmpty()->email()->emailAvailable(),
         'name'=>v::notEmpty()->alpha()->nameAvailable(),
+        'societe'=>v::notEmpty(),
         'cin'=>v::noWhitespace()->notEmpty()->Alnum(),
         'num_tel'=>v::noWhitespace()->notEmpty()->Digit(),
         'password'=>v::noWhitespace()->notEmpty()
@@ -52,9 +53,11 @@
       if($validation->failed()){
         return $response->withRedirect($this->router->pathFor('auth.signup'));
       }
+      //add societe
       $user = User::create([
         'name'=>$request->getParam('name'),
         'email'=>$request->getParam('email'),
+        'societe'=>$request->getParam('societe'),
         'num_tel'=>$request->getParam('num_tel'),
         'cin'=>$request->getParam('cin'),
         'password'=>password_hash($request->getParam('password'),PASSWORD_DEFAULT),
@@ -63,12 +66,12 @@
       $dir = __DIR__.'/../../../dossiers/'.$user['id'];
       //echo $dir;
       mkdir($dir,0777,true);
-      Demande::create([
-        'Num_dossier'=>$user['id'],
-        'statut'=>"nouveau"
-      ]);
+      // Demande::create([
+      //   'Num_dossier'=>$user['id'],
+      //   'statut'=>"nouveau"
+      // ]);
       $dossier = Dossier::create([
-        'statut'=>"nouveau"
+        'statut'=> 0
       ]);
       if($request->getParam('type') === "construire"){
         $dossier_construire = dossier_construire::create([
@@ -86,12 +89,14 @@
       $dossier->save();
       $_SESSION['id'] = $user->id;
       $_SESSION['type'] = $user->type;
+      $_SESSION['name'] = $user->name;
       //die();
       return $response->withRedirect($this->router->pathFor('home'));
     }
     public function getSignout($request,$response){
       unset($_SESSION['id']);
       unset($_SESSION['type']);
+      unset($_SESSION['name']);
       return $response->withRedirect($this->router->pathFor('auth.signin'));
     }
   }

@@ -1,5 +1,6 @@
 <?php
   require __DIR__.'/../vendor/autoload.php';
+
   use Respect\Validation\Validator as v;
   session_start();
 
@@ -44,6 +45,14 @@
   $container['validator'] = function($container){
     return new \Test\Validation\Validator;
   };
+
+  $container['flash'] = function($container){
+    return new \Slim\Flash\Messages;
+  };
+  $container['pdf'] = function($container){
+    return new \fpdf\FPDF();
+  };
+  //Middleware
   $app->add(new \Test\Middleware\ValidationErrorMiddleware($container));
   $app->add(new \Test\Middleware\UserSettingMiddleware($container));
 
@@ -59,6 +68,10 @@
 
   $container['DemandeController'] = function($container){
     return new \Test\Controllers\Commandes\DemandeController($container);
+  };
+
+  $container['AdminController'] = function($container){
+    return new \Test\Controllers\Admin\AdminController($container);
   };
   //set of custom rules
   v::with('Test\\Validation\\Rules');

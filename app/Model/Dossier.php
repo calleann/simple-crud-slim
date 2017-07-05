@@ -31,6 +31,11 @@
       return $this->hasOne('Test\Model\Etat');
     }
 
+    public function autorisation()
+    {
+      return $this->hasOne('Test\Model\Autorisation');
+    }
+
     public function compter(){
       $dossier_fils = $this->dossierable;
       $count = 0;

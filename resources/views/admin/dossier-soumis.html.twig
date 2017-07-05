@@ -1,0 +1,362 @@
+{% extends 'templates/app.html.twig' %}
+
+{%block content%}
+  <div class="col-lg-12">
+    {% if dossier.statut == 6 %}
+      <div class="row">
+        <div class="alert alert-info" role="alert">
+          <i>Dossier traité avec succès</i>
+        </div>
+      </div>
+    {% endif %}
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default {{dossier.etat.valide == 1 ? 'panel-success':'panel-default'}}">
+          <div class="panel-heading"><strong>Dossier N:{{dossier.user.id}} - {{dossier.etat.valide == 1 ? 'Etape Validée ':''}} </strong> </div>
+          <div class="panel-body" style="display:{{dossier.statut == 1 or dossier.statut == 0 ? 'block':'none'}};">
+            <!-- <div class="row">
+              <div class="col-lg-offset-9 col-lg-3">
+                <button class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span>&nbsp; Notifier utilisateur</button>
+              </div>
+            </div> -->
+            <div class="row">
+              <label>&nbsp;Représentant</label> : {{dossier.user.name}}<br>
+              <label>&nbsp;Société</label>:{{dossier.user.societe}}<br>
+              <label>&nbsp;Statut</label> : {{dossier.statut}}<br>
+              <label>&nbsp;Nombre des fichiers manquants</label> : {{dossier.compter()}}<br>
+            </div>
+            <div class="row">
+
+
+            <table class="table striped">
+              <thead>
+                <th width="20%">Nom du fichier:</th>
+                <th width="20%">Fichier chargé:</th>
+                <th width="40%">Note:</th>
+                <th width="20%">Action:</th>
+              </thead>
+              <tbody>
+                <!--1-->
+                <tr>
+                  <td><label>Demande d'autorisation</label></td>
+                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.demande_autorisation}}">{{dossier.dossierable.demande_autorisation}}</a></td>
+                  <td><input type="text" name="" style="width:100%;" value=""></td>
+                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'demande_autorisation'})}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                </tr>
+                <!--2-->
+                <tr>
+                  <td><label>Fichier de propriété</label></td>
+                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.propriete}}">{{dossier.dossierable.propriete}}</a></td>
+                  <td><input type="text" name="" style="width:100%;" value=""></td>
+                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'propriete' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                </tr>
+                <!--3-->
+                <tr>
+                  <td><label>plan topographique</label></td>
+                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.plan_topographique}}">{{dossier.dossierable.plan_topographique}}</a></td>
+                  <td><input type="text" name="" style="width:100%;" value=""></td>
+                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'plan_topographique' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                </tr>
+                <!--4-->
+                <tr>
+                  <td><label>maîtrise d'oeuvre</label></td>
+                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.maitrise_oeuvre}}">{{dossier.dossierable.maitrise_oeuvre}}</a></td>
+                  <td><input type="text" name="" style="width:100%;" value=""></td>
+                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'maitrise_oeuvre' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                </tr>
+                <!--5-->
+                <tr>
+                  <td><label>plan de structure</label></td>
+                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.plan_structure}}">{{dossier.dossierable.plan_structure}}</a></td>
+                  <td><input type="text" name="" style="width:100%;" value=""></td>
+                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'plan_structure' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                </tr>
+                <!--6-->
+                <tr>
+                  <td><label>note de presentation</label></td>
+                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.note_pressentation}}">{{dossier.dossierable.note_pressentation}}</a></td>
+                  <td><input type="text" name="" style="width:100%;" value=""></td>
+                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'note_pressentation' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                </tr>
+                <!--7-->
+                <tr>
+                  <td><label>architecte</label></td>
+                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.architecte}}">{{dossier.dossierable.architecte}}</a></td>
+                  <td><input type="text" name="" style="width:100%;" value=""></td>
+                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'architecte' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                </tr>
+                <!--8-->
+                <tr>
+                  <td><label>fiche technique</label></td>
+                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.fiche_technique}}">{{dossier.dossierable.fiche_technique}}</a></td>
+                  <td><input type="text" name="" style="width:100%;" value=""></td>
+                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'fiche_technique' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                </tr>
+                <!--9-->
+                <tr>
+                  <td><label>bureau de controle</label></td>
+                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.bureau_controle}}">{{dossier.dossierable.bureau_controle}}</a></td>
+                  <td><input type="text" name="" style="width:100%;" value=""></td>
+                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'bureau_controle' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                </tr>
+                <!--10-->
+                <tr>
+                  <td><label>notice de sécurité</label></td>
+                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.notice_securite}}">{{dossier.dossierable.notice_securite}}</a></td>
+                  <td><input type="text" name="" style="width:100%;" value=""></td>
+                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'notice_securite' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                </tr>
+                <!--11-->
+                <tr>
+                  <td><label>contrat</label></td>
+                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.contrat}}">{{dossier.dossierable.contrat}}</a></td>
+                  <td><input type="text" name="" style="width:100%;" value=""></td>
+                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'contrat' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                </tr>
+                <!--12-->
+                <tr>
+                  <td><label>cahier de chantier</label></td>
+                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.frais_autorisation}}">cahier_chantier_47.pdf</a></td>
+                  <td><input type="text" name="" style="width:100%;" value=""></td>
+                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'frais_autorisation' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                </tr>
+                <!--13-->
+                <tr>
+                  <td><label>fiche des sapeurs</label></td>
+                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.fiche_sapeurs}}">{{dossier.dossierable.fiche_sapeurs}}</a></td>
+                  <td><input type="text" name="" style="width:100%;" value=""></td>
+                  <td><a href="{{path_for('demande.delete',{'id': dossier.id, 'key':'fiche_sapeurs'})}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                </tr>
+                <tr>
+                  <td colspan="4" align="center">
+                    <form action="{{path_for('admin.posttest')}}" method="post">
+                      <input type="hidden" name="id" value="{{dossier.id}}" />
+                      <button type="submit" class="btn btn-success" {{dossier.statut == 1 and dossier.compter() == 0 ? '':'disabled' }}>Valider</button>
+                    </form>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Accusé de réception -->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel {{dossier.etat.accuse == 1 ? 'panel-success':'panel-default'}}">
+          <div class="panel-heading"><strong>Accusé de la réception du plan topographique et sapeurs - {{dossier.etat.accuse == 1 ? 'Etape Validée':''}}</strong></div>
+          <div class="panel-body" style="display:{{dossier.statut == 2 ? 'block':'none'}};">
+            <form action="{{path_for('admin.postreception')}}" method="post">
+              <div class="admin_signature">
+                <input type="hidden" name="id" value="{{dossier.id}}" />
+                <input type="checkbox" id="check-box-id" {{dossier.etat.accuse == 1 ?'checked':''}}/>&nbsp;&nbsp;J'accuse la récepetion du plan topologique et fiche des sapeurs auprès de : <label>{{dossier.user.name}}</label><br><br>
+                <button type="submit" class="btn btn-primary" disabled="true" id="btn-id">J'accuse la réception</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Avis Proctection civile -->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel {{dossier.etat.protection_civile  ==  1 ? 'panel-success':'panel-default'}} {{dossier.statut == -4 ? 'panel-danger':''}}">
+          <div class="panel-heading"><strong> Avis service Protection civile - {{dossier.etat.protection_civile == 1 ? 'Etape Validée':''}}{{dossier.statut == -4 ? 'Avis defavorable':''}}</strong></div>
+          <div class="panel-body" style="display:{{dossier.statut == 3 or dossier.statut == -4  ? 'block':'none'}};">
+            <form action="{{path_for('admin.postprotection')}}" method="post" enctype="multipart/form-data">
+              <div class= "avis_protection">
+                <div class="form-group">
+                  <label for="avis">Avis Service de la protection civile:&nbsp;</label>
+                  <label class="radio-inline"><input type="radio" name="avis" value="favorable" {{dossier.etat.protection_civile  ==  1 ? 'checked disabled':''}} >Avis favorable</label>
+                  <label class="radio-inline"><input type="radio" name="avis" value="defavorable" {{dossier.statut == -4 ? 'checked':''}} {{dossier.etat.protection_civile  ==  1 ? 'disabled':''}}>Avis défavorable</label>
+                </div>
+
+                <div class="test">
+                  <div class="form-group">
+                    <label for="note">Note:</label>
+                    <textarea class="form-control" id="note" name="note" style="width:100%" rows="3" {{dossier.etat.protection_civile  ==  1 ? 'disabled':''}}>{{dossier.dossierable.protection_civile.note}}</textarea>
+                    <input type="hidden" name="id" value="{{dossier.id}}" />
+                  </div>
+                  <br>
+                  <div class="form-group">
+                    <label for="nom_fichier">Avis de la protection civile:&nbsp;</label>
+                    {% if dossier.dossierable.protection_civile.nom_fichier is not empty %}
+                        <a  href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.protection_civile.nom_fichier}}" target="_blank">Consulter le document chargé</a>
+                    {% endif %}<br>
+                    <label class="btn btn-default" for="nom_fichier" {{dossier.etat.accuse  ==  1 ? '':'disabled'}}{{dossier.etat.protection_civile  ==  1 ? 'disabled':''}}>
+                      <input id="nom_fichier" type="file" name="nom_fichier" style="display:none;"  {{dossier.etat.accuse  ==  1 ? '':'disabled'}} {{dossier.etat.protection_civile  ==  1 ? 'disabled':''}} onchange="$('#upload-file-info-1').html($(this).val());">
+                      Charger ici
+                    </label>&nbsp;
+                    <span class='label label-default' id="upload-file-info-1"></span>
+                  <br>
+                </div>
+                <button type="submit" class="btn btn-primary"  id="btn-id" {{dossier.etat.accuse  ==  1 ? '':'disabled'}} {{dossier.etat.protection_civile  ==  1 ? 'disabled':''}}>Envoyer le scan</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- Accusé des frais de paiement -->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel {{dossier.etat.paiement == 1 ? 'panel-success':'panel-default'}}">
+          <div class="panel-heading"><strong>Accusé des frais d'autorisation - {{dossier.etat.paiement == 1 ? 'Etape Validée':''}}</strong></div>
+          <div class="panel-body" style="display:{{dossier.statut == 4 ? 'block':'none'}};">
+            <form class="" action="{{path_for('admin.postpaiement')}}" method="post" enctype="multipart/form-data">
+              <input type="checkbox" id="check-box-paiement" {{dossier.etat.paiement == 1 ? 'checked':''}} {{dossier.statut == 4 ? '':'disabled'}}>
+              <span>J'accuse la réception des autres documents ainsi les frais du dossier</span>
+              <br><br>
+              <div class="check-me" style="display:none;">
+                <div class="form-group">
+                  <label for="nom_fichier">Fichier des frais de paiement:&nbsp;</label>
+                  {% if dossier.etat.paiement  == 1 %}
+                    <a href="../../../dossiers/{{dossier.user.id}}/frais_de_paiement_{{dossier.user.id}}.pdf" target="_blank">Consulter le document chargé</a>
+                  {% endif %}
+                  <br>
+                  <label class="btn btn-default" for="fichier_paiement" {{dossier.etat.paiement == 1 ? 'disabled':''}}>
+                    <input id="fichier_paiement" type="file" name="fichier_paiement" style="display:none;"  {{dossier.etat.paiement ==  1 ? 'disabled':''}} onchange="$('#garbage').html($(this).val());">
+                    Charger ici
+                  </label>&nbsp;
+                  <span class="label label-default" id="garbage"></span>
+                </div>
+                <input type="hidden" name="id" value="{{dossier.id}}" />
+                <button type="submit" class="btn btn-primary"  id="btn-id" {{dossier.etat.paiement == 1 ? 'disabled':''}}>Sauvegarder le scan de paiement</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel {{dossier.etat.cloture == 1 ? 'panel-success':'panel-default'}}">
+          <div class="panel-heading"><strong>Génération d'autorisation + Clôture du dossier - {{dossier.etat.cloture == 1 ? 'Etape Validée':''}}</strong></div>
+          <div class="panel-body" style="display:{{dossier.statut == 5 ? 'block':'none'}};">
+            <h4 style="text-align:center;"><strong>Géneration d'autorisation</strong></h4>
+            {% if dossier.etat.cloture == 1 %}
+              <h5 style="text-align:center;"><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/autorisation_commencement_{{dossier.user.id}}.pdf">Click me</a></h5>
+            {% endif %}
+            <!-- <a href="{{path_for('demande.test',{'id':dossier.id})}}">Click me senpai</a> -->
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Num. Dossier</th>
+                  <th>Société</th>
+                  <th>Représentant</th>
+                  <th>Tél</th>
+                  <th>Email</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{dossier.user.id}}</td>
+                  <td>{{dossier.user.societe}}</td>
+                  <td>{{dossier.user.name}}</td>
+                  <td>{{dossier.user.num_tel}}</td>
+                  <td>{{dossier.user.email}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <form action="{{path_for('admin.postcloture',{'id':dossier.id})}}" method="post">
+              <div class="form-group">
+                <label for="lot">Ilot/Lot:</label><br>
+                <input id="lot" class="form-control" style="width:40%" type="text" name="lot" {{dossier.statut == 5 ? '':'disabled'}} value="{{dossier.etat.cloture == 1 ? dossier.autorisation.lot}}" required/>
+              </div>
+              <br>
+              <div class="form-group">
+                <label for="date_commencement">Date de commencement des travaux:</label><br>
+                <input id="date_commencement" class="form-control" style="width:40%" type="date" name="date_commencement" {{dossier.statut == 5 ? :'disabled'}} value="{{dossier.etat.cloture == 1 ? dossier.autorisation.date_commencement | date('Y-m-d') :"now" | date('Y-m-d')}}" required/>
+              </div>
+              <br>
+              <button type="submit" class="btn btn-default"  id="btn-id" {{dossier.statut == 5 ? '':'disabled'}}><span class="glyphicon glyphicon-print"></span>&nbsp;générer le fichier d'autorisation</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('.panel-heading').click(function(){
+        $(this).parent().find('.panel-body').each(function(){
+          console.log($(this));
+          if($(this).is(":hidden")){
+              $(this).slideDown("slow");
+          }
+          else{
+              $(this).hide("slow");
+          }
+        });
+      });
+    });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      var statut = {{dossier.statut}};
+      console.log(statut);
+      if(statut != 2){
+        $('.admin_signature').children().prop('disabled',true);
+      }
+      else{
+      $('#check-box-id').click(function() {
+        if ($(this).is(':checked')) {
+          $('#btn-id').removeAttr('disabled');
+        } else {
+          $('#btn-id').attr('disabled', 'true');
+        }
+      });
+      }
+    });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      var statut = {{dossier.statut}};
+      console.log(statut);
+      if(statut != 3 && statut != -4){
+        $('.avis_protection').children().prop('disabled',true);
+      }
+    });
+  </script>
+  <!-- <script type="text/javascript">
+    $(document).ready(function() {
+      $('.radio-inline').click(function() {
+        var avis = $("input[name='avis']:checked").val();
+        if(avis == "favorable"){
+          console.log(avis);
+          $('.test').show();
+        }
+        if(avis == "defavorable"){
+          console.log(avis);
+          $('.test').hide();
+        }
+      });
+    });
+  </script> -->
+  <script type="text/javascript">
+    $(document).ready(function() {
+      if($('#check-box-paiement').is(':checked')){
+        $('.check-me').show();
+      }
+      else{
+        $('.check-me').hide();
+      }
+      $('#check-box-paiement').change(function(){
+        if($(this).is(':checked')){
+          $('.check-me').show();
+        }
+        else{
+          $('.check-me').hide();
+        }
+      });
+    });
+  </script>
+{% endblock %}

@@ -7,8 +7,11 @@
   use Test\Model\Etat;
   use Test\Model\dossier_construire;
   use Test\Model\dossier_exploitation;
+  use Test\Model\Protection_civile;
+  use Test\Model\PDF;
+  use Test\Model\Autorisation;
+  use Test\Model\Notification;
   use Respect\Validation\Validator as v;
-
   /**
    *
    */
@@ -16,29 +19,19 @@
   {
     public function getTest($request,$response)
     {
-      $user = User::find($_SESSION['id']);
-      // $dossiers = Dossier::all();
-      // foreach($dossiers as $dossier){
-      //   if($dossier->dossierable instanceof dossier_exploitation){
-      //       echo "exploitation <br>";
-      //   }
-      //   if($dossier->dossierable instanceof dossier_construire){
-      //       echo "construire <br>";
-      //   }
-      // }
-      $dossier = $user->dossier;
-      echo $dossier->etat;
-      echo "ok";
+
 
     }
     public function getTest2($request,$response)
     {
-      $dossier = Dossier::find($request->getAttribute('id'));
-      echo $dossier->compter();
-      echo json_encode($dossier)."<br>";
-      echo json_encode($dossier->user)."<br>";
-      echo json_encode($dossier->dossierable);
+      $pdf = new PDF();
+      $pdf->AliasNbPages();
 
+      $pdf->setBodyLine(206,"fish and shrimps",date("d/m/Y"),date("d/m/Y"),15);
+      $pdf->CorpsRules();
+      $response = $this->response->withHeader( 'Content-type', 'application/pdf' );
+      $response->write( $pdf->Output('Not so cool pdf', 'S',true));
+      return $response;
     }
     //
     // public function getAllDemandes($request,$response)
@@ -187,6 +180,7 @@
         $env = $this->view->getEnvironment();
         $env->addGlobal('statut',$dossier->statut);
         $env->addGlobal('count',$count);
+        $env->addGlobal('user',$user);
         $env->addGlobal('etat',$dossier->etat);
         return $this->view->render($response,'cmd/test-submit.html.twig');
       }
@@ -195,15 +189,44 @@
 
     public function postTestSoumettre($request,$response){
       $user = User::find($_SESSION['id']);
+      $notifications = Notification::where('user_id',$user->id)->delete();
       $dossier = $user->dossier;
-      $dossier->statut = "soumis";
+      $dossier->statut = 1;
       $dossier->save();
-      if($dossier->etat === null)
-      {
-        $etat = new Etat();
-        $dossier->etat()->save($etat);
-      }
       return $response->withRedirect($this->router->pathFor('demande.submit'));
+    }
+
+    public function getUserInfo($request,$response)
+    {
+      if($_SESSION['id'])
+      {
+        $user = User::find($_SESSION['id']);
+        $env = $this->view->getEnvironment();
+        $env->addGlobal('num_decision',$user->num_decision);
+        $env->addGlobal('date_decision',$user->date_decision);
+        $env->addGlobal('activite',$user->activite);
+        return $this->view->render($response,'cmd/info-sup.html.twig');
+      }
+      return $response->withRedirect($this->router->pathFor('home'));
+    }
+
+    public function postUserInfo($request,$response)
+    {
+      $user = User::find($_SESSION['id']);
+      $validation = $this->validator->validate($request,[
+        'num_decision'=> v::noWhitespace()->notEmpty()->Digit(),
+        'date_decision'=> v::date(),
+        'activite' => v::notEmpty()
+      ]);
+      if($validation->failed()){
+        return $response->withRedirect($this->router->pathFor('demande.user'));
+      }
+      $date_decision = strtotime($request->getParam('date_decision'));
+      $user->num_decision = $request->getParam('num_decision');
+      $user->date_decision = date('Y-m-d',$date_decision);
+      $user->activite = $request->getParam('activite');
+      $user->save();
+      echo 'yay';
     }
 
   }

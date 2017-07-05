@@ -1,0 +1,230 @@
+{% extends 'templates/app.html.twig' %}
+
+{%block content%}
+  <div class="col-lg-12">
+    <!-- {{dossiers | json_encode}} -->
+    <!-- {{ "now"|date("d/m/Y") }} -->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading"><strong>Nouveaux Dossiers</strong></div>
+          <div class="panel-body">
+            <table class="table table-striped">
+              <thead>
+                <th>Dossier</th>
+                <th>Société</th>
+                <th>Nom</th>
+                <th>type</th>
+                <th>Crée le</th>
+                <th>dernière modification</th>
+              </thead>
+              <tbody>
+                {% for dossier in dossiers_nouveau %}
+                    <tr>
+                      <td>{{dossier.id}}</td>
+                      <td>{{dossier.user.societe}}</td>
+                      <td>{{dossier.user.name}}</td>
+                      <td>{{dossier.user.type}}</td>
+                      <td>{{dossier.created_at |date("d/m/Y") }}</td>
+                      <td>{{dossier.updated_at |date("d/m/Y") }}</td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading"><strong>Dossiers Soumis</strong></div>
+          <div class="panel-body">
+            <table class="table table-striped">
+              <thead>
+                <th>Dossier</th>
+                <th>Société</th>
+                <th>Nom</th>
+                <th>type</th>
+                <th>Consulter</th>
+              </thead>
+              <tbody>
+                {% for dossier in dossiers_soumis %}
+                    <tr>
+                      <td>{{dossier.id}}</td>
+                      <td>{{dossier.user.societe}}</td>
+                      <td>{{dossier.user.name}}</td>
+                      <td>{{dossier.user.type}}</td>
+                      <td><a href="{{path_for('admin.dossier',{'id': dossier.id,'type': dossier.user.type})}}">Consulter</a></td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading"><strong>Dossiers Valide par l'administrateur</strong></div>
+          <div class="panel-body">
+            <table class="table table-striped">
+              <thead>
+                <th>Dossier</th>
+                <th>Société</th>
+                <th>Nom</th>
+                <th>type</th>
+                <th>Consulter</th>
+              </thead>
+              <tbody>
+                {% for dossier in dossiers_valide %}
+                    <tr>
+                      <td>{{dossier.id}}</td>
+                      <td>{{dossier.user.societe}}</td>
+                      <td>{{dossier.user.name}}</td>
+                      <td>{{dossier.user.type}}</td>
+                      <td><a href="{{path_for('admin.dossier',{'id': dossier.id,'type': dossier.user.type})}}">Consulter</a></td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading"><strong>Dossiers en attente de la validation Protection civile</strong></div>
+          <div class="panel-body">
+            <table class="table table-striped">
+              <thead>
+                <th>Dossier</th>
+                <th>Société</th>
+                <th>Nom</th>
+                <th>type</th>
+                <th>Consulter</th>
+              </thead>
+              <tbody>
+                {% for dossier in dossiers_accuse %}
+                    <tr>
+                      <td>{{dossier.id}}</td>
+                      <td>{{dossier.user.societe}}</td>
+                      <td>{{dossier.user.name}}</td>
+                      <td>{{dossier.user.type}}</td>
+                      <td><a href="{{path_for('admin.dossier',{'id': dossier.id,'type': dossier.user.type})}}">Consulter</a></td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading"><strong>Dossiers en attente de paiement</strong></div>
+          <div class="panel-body">
+            <table class="table table-striped">
+              <thead>
+                <th>Dossier</th>
+                <th>Société</th>
+                <th>Nom</th>
+                <th>type</th>
+                <th>Consulter</th>
+              </thead>
+              <tbody>
+                {% for dossier in dossiers_protection %}
+                    <tr>
+                      <td>{{dossier.id}}</td>
+                      <td>{{dossier.user.societe}}</td>
+                      <td>{{dossier.user.name}}</td>
+                      <td>{{dossier.user.type}}</td>
+                      <td><a href="{{path_for('admin.dossier',{'id': dossier.id,'type': dossier.user.type})}}">Consulter</a></td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading"><strong>Dossiers en attente de clôture</strong></div>
+          <div class="panel-body">
+            <table class="table table-striped">
+              <thead>
+                <th>Dossier</th>
+                <th>Société</th>
+                <th>Nom</th>
+                <th>type</th>
+                <th>Consulter</th>
+              </thead>
+              <tbody>
+                {% for dossier in dossiers_paiement %}
+                    <tr>
+                      <td>{{dossier.id}}</td>
+                      <td>{{dossier.user.societe}}</td>
+                      <td>{{dossier.user.name}}</td>
+                      <td>{{dossier.user.type}}</td>
+                      <td><a href="{{path_for('admin.dossier',{'id': dossier.id,'type': dossier.user.type})}}">Consulter</a></td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading"><strong>Dossiers traités</strong></div>
+          <div class="panel-body">
+            <table class="table table-striped">
+              <thead>
+                <th>Dossier</th>
+                <th>Société</th>
+                <th>Nom</th>
+                <th>type</th>
+                <th>Consulter</th>
+              </thead>
+              <tbody>
+                {% for dossier in dossiers_cloture %}
+                    <tr>
+                      <td>{{dossier.id}}</td>
+                      <td>{{dossier.user.societe}}</td>
+                      <td>{{dossier.user.name}}</td>
+                      <td>{{dossier.user.type}}</td>
+                      <td><a href="{{path_for('admin.dossier',{'id': dossier.id,'type': dossier.user.type})}}">Consulter</a></td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script type="text/javascript">
+  $(document).ready(function () {
+    $('.table').dataTable({
+      // "paging":   ,
+      "info":   false,
+      "bLengthChange": false,
+      "pageLength" : 4,
+    });
+  });
+  </script>
+{% endblock %}

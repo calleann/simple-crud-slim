@@ -33,4 +33,9 @@
       return $this->morphOne('Test\Model\Dossier','dossierable');
     }
 
+    public function protection_civile()
+    {
+      return $this->hasOne('Test\Model\Protection_civile','dossier_id');
+    }
+
   }

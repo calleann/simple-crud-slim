@@ -13,8 +13,11 @@
 
     protected $fillable =[
         'dossier_id',
-        'etat1',
-        'etat2',
+        'valide',
+        'accuse',
+        'protection_civile',
+        'paiement',
+        'cloture'
     ];
 
     public $timestamps = false;

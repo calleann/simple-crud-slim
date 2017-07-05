@@ -6,24 +6,23 @@
               <div class="row">
                 <div class="alert alert-danger" role="alert"><p>Dossier incomplet,Veuillez saisir les pièces manquante dans la page du dossier.Cliquez <a href="{{path_for('demande.test')}}"><strong>ici</strong></a> pour revenir.</p></div>
               </div>
-        {% elseif count == 0 and statut == "nouveau" %}
+        {% elseif count == 0 and statut == 0 %}
               <div class="row">
                 <div class="alert alert-info" role="alert"><p>Dossier complet,vous pouvez soumettre votre dossier.</p></div>
               </div>
         {% else %}
               <div class="row">
-                <div class="alert alert-success" role="alert"><p>L'état de votre dossier est : {{statut}}.</p></div>
+                <div class="alert alert-success" role="alert"><p>Dossier envoyé avec succès</p></div>
               </div>
         {% endif %}
-        {{etat | json_encode}}
         <div class="row">
           <div class="panel panel-default">
             <div class="panel-heading"><strong>Soumettre son dossier</strong></div>
             <div class="panel-body">
               <form action="{{path_for('demande.submit')}}" method="post">
                 <div class="Submit_Dossier">
-                  <input type="checkbox" id="check-box-id" {{statut =="nouveau" ?'':'checked'}}/>&nbsp;&nbsp;J'ai lu/vérifié toutes les pièces constituant le dossier<br><br>
-                  {% if statut == "nouveau" %}
+                  <input type="checkbox" id="check-box-id" {{ statut > 0 ?'checked':''}}/>&nbsp;&nbsp;J'ai lu/vérifié toutes les pièces constituant le dossier<br><br>
+                  {% if statut == 0 %}
                     <p><strong>Alert!:</strong>Une fois votre dossier est soumis,vous ne pouvez plus le modifier.</p>
                   {% endif %}
                   <button type="submit" class="btn btn-primary" disabled="true" id="btn-id">Soumettre mon dossier</button>
@@ -33,16 +32,16 @@
           </div>
         </div>
 
-        {% if statut != "nouveau" %}
+        {% if etat.valide == 1 %}
           {% include 'templates/partials/statut-bar.html.twig' %}
         {% endif %}
       </div>
       <script type="text/javascript">
         var count = {{count}};
         console.log(count);
-        var statut = "{{statut}}";
+        var statut = {{statut}};
         $(document).ready(function(){
-          if(count != 0 || statut != "nouveau" ){
+          if(count != 0 || statut != 0 ){
             $('.Submit_Dossier').children().prop('disabled',true);
           }
           else{
@@ -56,5 +55,5 @@
           }
         });
       </script>
-      
+
 {% endblock %}

@@ -3,33 +3,96 @@
     <div class="panel-heading"><strong>Statut du dossier</strong></div>
     <div class="panel-body">
       <br>
-      <div class="progress">
-        {% if etat.etat1 == 1 %}
-          <div class="progress-bar" role="progressbar" style="width: 25%;display:none;"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Etat1</div>
-          <div class="progress-bar progress-bar-success" role="progressbar" style="width: 25%;display:none;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Etat1</div>
-        {% endif %}
-        {% if etat.etat2 == 1 %}
-          <div class="progress-bar progress-bar-danger" role="progressbar" style="width: 25%;display:none;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Etat2</div>
-        {% endif %}
-        {% if etat.etat3 == 1 %}
-          <div class="progress-bar progress-bar-warning" role="progressbar" style="width: 25%;display:none;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Etat3</div>
-        {% endif %}
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="progress" id="etat">
+            {% if etat.valide == 1 %}
+            <div class="progress-bar" role="progressbar" style="width: 20%;display:none;background:#d5f4e6;"  aria-valuemin="0" aria-valuemax="100"><font color='black'>Dossier validé par admin</font></div>
+            {% endif %}
+            {% if etat.accuse == 1 %}
+            <div class="progress-bar " role="progressbar" style="width: 20%;display:none;background:#80ced6;" aria-valuemin="0" aria-valuemax="100"><font color='black'>Plan recu</font></div>
+            {% endif %}
+            {% if etat.protection_civile == 1 %}
+            <div class="progress-bar" role="progressbar" style="width: 20%;display:none;background:#fefbd8;" aria-valuemin="0" aria-valuemax="100"><font color='black'>Avis f. P.C</font></div>
+            {% endif %}
+            {% if etat.paiement == 1 %}
+            <div class="progress-bar " role="progressbar" style="width: 20%;display:none;background:#618685;" aria-valuemin="0" aria-valuemax="100"><font color='black'>Paiement reçu</font></div>
+            {% endif %}
+            {% if etat.cloture == 1 %}
+            <div class="progress-bar " role="progressbar" style="width: 20%;display:none;background:#618660;" aria-valuemin="0" aria-valuemax="100"><font color='black'>Autorisation de construire</font></div>
+            {% endif %}
+          </div>
+          <label>Pourcentage total: <span id="percentage">0</span>%</label><br>
+        </div>
       </div>
-      <label>Pourcentage total: <span id="percentage">0</span>%</label>
+      <br>
+      <div class="row">
+        <div class="col-lg-12">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th width="30%">Etape</th>
+                <th width="20%">Etat</th>
+                <th width="40%">Note</th>
+                <th width="10%">fichier</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if etat.valide == 1 %}
+                <tr>
+                  <th>Valide par admin</th>
+                  <td><span style="color:green;"><strong>Valide</strong></span></td>
+                  <td>Dossier validé par l'administrateur</td>
+                  <td></td>
+                </tr>
+              {% endif %}
+                <tr>
+                  <th>Réception des plans</th>
+                  <td>{% if etat.accuse == 1 %}<span style="color:green;"><strong>Valide</strong></span>{% else %}<span style="color:yellow;"><strong>En attente</strong></span>{% endif %}</td>
+                  <td>{{ etat.accuse == 1 ? "Plan reçu auprès de l'administration":"" }}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th>Avis de la protection civile</th>
+                  <td>{% if etat.protection_civile == 1 %}<span style="color:green;"><strong>Valide</strong></span>{% elseif statut == -4 %}<span style="color:red;"><strong>Rejeté</strong></span>{% else %}<span style="color:yellow;"><strong>En attente</strong></span>{% endif %}</td>
+                  <td>{{ etat.protection_civile == 1 or statut == -4 ? user.dossier.dossierable.protection_civile.note:"" }}</td>
+                  <td>{% if etat.protection_civile == 1 or statut == -4 %}<a target="_blank" href="../dossiers/{{user.id}}/{{ user.dossier.dossierable.protection_civile.nom_fichier}}">Consulter</a>{% endif %}</td>
+                </tr>
+                <tr>
+                  <th>Frais d'autorisation</th>
+                  <td>{% if etat.paiement == 1 %}<span style="color:green;"><strong>Valide</strong></span>{% else %}<span style="color:yellow;"><strong>En attente</strong></span>{% endif %}</td>
+                  <td>{{ etat.paiement == 1 ? "Nous avons bien reçu le paiement de frais d'autorisation":"" }}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th>Génération de fichier d'autorisation</th>
+                  <td>{% if etat.cloture == 1 %}<span style="color:green;"><strong>Valide</strong></span>{% else %}<span style="color:yellow;"><strong>En attente</strong></span>{% endif %}</td>
+                  <td>{{ etat.cloture == 1 ? "le fichier d'autorisation a été généré":"" }}</td>
+                  <td>{% if etat.cloture == 1 %}<a target="_blank" href="../dossiers/{{user.id}}/autorisation_commencement_{{user.id}}.pdf">Consulter</a>{% endif %}</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
     </div>
   </div>
 </div>
+
+
 
 
 <script type="text/javascript">
   var i = 0;
   var percentage = 0;
   $(document).ready(function() {
-    $(this).find(".progress-bar").each(function(){
-      $(this).delay(300*i+ 200).show("slide", { direction: "left" },300);
-      i++;
-      percentage += 25;
+    $(this).find("#etat").each(function(){
+      $(this).find(".progress-bar").each(function(){
+        $(this).delay(200*i).show("slide", { direction: "left" },200);
+        i++;
+        percentage += 20;
+      });
+      $('#percentage').text(percentage);
     });
-    $('#percentage').text(percentage);
   });
 </script>

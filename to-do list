@@ -1,0 +1,20 @@
+---------------------------
+Front Office:
++Tweek up the multiple upload view(Exploitation)
++Home page + models of the downloadable documents
++View of status
++Notification upon changes
+
+---------------------------
+Back Office:
++Work on the process of validation
++Work on the process of updating the status
++Statistics
+
+
++++++++++++++++
++ Work on the paiement plus generation du fichier de cloture
+++++++++++++++++
+fpdf works(-ish) +add necessary information
+
+Work on the notifications

@@ -14,13 +14,31 @@
     //signout
     $app->get('/auth/signout','AuthController:getSignout')->setName('auth.signout');
 
-    // //user commandes
-    $app->get('/test','DemandeController:getTest');
-    $app->get('/test2/{id}','DemandeController:getTest2')->setName('demande.test2');
+    // //Testing stuff
+    $app->get('/test2','DemandeController:getTest2')->setName('demande.test2');
     // $app->get('/test3/{id}','DemandeController:getDemandeDetails');
 
-    $app->get('/test4','DemandeController:getTestform')->setName('demande.test');
-    $app->post('/test4','DemandeController:postTestform');
+    //front-office stuff
+    $app->get('/info-supplementaire','DemandeController:getUserInfo')->setName('demande.user');
+    $app->post('/info-supplementaire','DemandeController:postUserInfo');
+    $app->get('/procedure-dossier','DemandeController:getTestform')->setName('demande.test');
+    $app->post('/procedure-dossier','DemandeController:postTestform');
 
-    $app->get('/test5','DemandeController:getTestSoumettre')->setName('demande.submit');
-    $app->post('/test5','DemandeController:postTestSoumettre');
+    $app->get('/soumettre-dossier','DemandeController:getTestSoumettre')->setName('demande.submit');
+    $app->post('/soumettre-dossier','DemandeController:postTestSoumettre');
+
+    //admin principal views
+    $app->get('/admin/dashboard','AdminController:getHello')->setName('admin.dashboard');
+    $app->get('/admin/users','AdminController:getUsers')->setName('admin.users');
+    //admin CRUD
+    $app->get('/dossier/{type}/{id}','AdminController:getDossierSoumis')->setName('admin.dossier');
+    $app->get('/delete[/{key}/{id}]','AdminController:getDelete')->setName('demande.delete');
+    $app->post('/valider','AdminController:postDossierSoumis')->setName('admin.posttest');
+    $app->post('/accuser','AdminController:postAccuseReception')->setName('admin.postreception');
+    $app->post('/protection','AdminController:postAccuseProtection')->setName('admin.postprotection');
+    $app->post('/paiement','AdminController:postAccusePaiement')->setName('admin.postpaiement');
+    $app->post('/cloture/{id}','AdminController:postAccuseCloture')->setName('admin.postcloture');
+
+    //test flash
+    $app->get('/foo','HomeController:getfoo')->setName('foo');
+    $app->get('/bar','HomeController:getbar')->setName('bar');

@@ -8,8 +8,13 @@
         <div class="panel-body">
            <!-- {{error | json_encode }}  -->
           <form class="form-signup" action="{{path_for('auth.signup')}}" method="post">
+            <div class="form-group {{error.societe ? 'has-error':''}}">
+              <label for="societe">Société:</label>
+              <input type="text" name="societe" class="form-control" id="societe">
+              {% if error.societe %}<span class="help-block" style="font-size:0.7em">{{error.societe | first}}</span>{% endif %}
+            </div>
             <div class="form-group {{error.name ? 'has-error':''}}">
-              <label for="name">Nom complet:</label>
+              <label for="name">Représentant (Nom complet):</label>
               <input type="text" name="name" class="form-control" id="name">
               {% if error.name %}<span class="help-block" style="font-size:0.7em">{{error.name | first}}</span>{% endif %}
             </div>
