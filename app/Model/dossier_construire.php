@@ -24,7 +24,7 @@
       'bureau_controle',
       'notice_securite',
       'contrat',
-      'frais_autorisation',
+      'cahier_chantier',
       'fiche_sapeurs'
     ];
 

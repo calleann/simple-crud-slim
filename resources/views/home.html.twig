@@ -2,12 +2,12 @@
 {% extends 'templates/app.html.twig' %}
 
 {%block content%}
-<div class="col-lg-12">  
+<div class="col-lg-12">
 {% if notifications %}
 {% for notification in notifications %}
 <div class="row">
   <div class="alert {{notification.type=="success" ? 'alert-success':''}} {{notification.type=="danger" ? 'alert-danger':''}} {{notification.type=="warning" ? 'alert-warning':''}}" role="alert">
-    {{notification.message}}
+    <p charset="utf-8">{{ notification.message }}</p>
   </div>
 </div>
 {% endfor %}

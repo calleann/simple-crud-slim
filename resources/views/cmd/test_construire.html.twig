@@ -27,11 +27,14 @@
                   <td width="75%">
                       <label for="demande_autorisation">fichier Demande d'autorisation:</label><br>
                       {% if dossier_fils.demande_autorisation is not empty %}
-                        <p><a target="_blank"  href="../dossiers/{{id}}/{{dossier_fils.demande_autorisation}}">consulter</a></p>
+                        <p><a target="_blank"  href="{{path_for('file',{'id': id ,'filename': dossier_fils.demande_autorisation })}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
-                      {% if error.demande_autorisation %}
+                      {% if error.demande_autorisation == 1 %}
                         <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                      {% if error.demande_autorisation == 2 %}
+                        <span class='label label-danger'>fichier non PDF</span>
                       {% endif %}
                   </td>
                   <td width="25%" align="center">
@@ -47,11 +50,14 @@
                   <td width="75%">
                       <label for="propriete">fichier Certificat de propriété:</label><br>
                       {% if dossier_fils.propriete is not empty %}
-                        <p><a target="_blank"  href="../dossiers/{{id}}/{{dossier_fils.propriete}}">consulter</a></p>
+                        <p><a target="_blank"  href="{{path_for('file',{'id': id ,'filename': dossier_fils.propriete })}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
-                      {% if error.propriete %}
+                      {% if error.propriete == 1 %}
                         <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                      {% if error.propriete == 2 %}
+                        <span class='label label-danger'>fichier non PDF</span>
                       {% endif %}
                   </td>
                   <td width="25%" align="center">
@@ -67,11 +73,14 @@
                   <td width="75%">
                       <label for="plan_topographique">fichier Plan topographique:</label><br>
                       {% if dossier_fils.plan_topographique is not empty %}
-                        <p><a target="_blank"  href="../dossiers/{{id}}/{{dossier_fils.plan_topographique}}">consulter</a></p>
+                        <p><a target="_blank"  href="{{path_for('file',{'id': id ,'filename': dossier_fils.plan_topographique })}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
-                      {% if error.plan_topographique %}
+                      {% if error.plan_topographique == 1 %}
                         <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                      {% if error.plan_topographique == 2 %}
+                        <span class='label label-danger'>fichier non PDF</span>
                       {% endif %}
                   </td>
                   <td width="25%" align="center">
@@ -87,11 +96,14 @@
                   <td width="75%">
                       <label for="maitrise_oeuvre">fichier Maîtrises d'oeuvres:</label><br>
                       {% if dossier_fils.maitrise_oeuvre is not empty %}
-                        <p><a target="_blank"  href="../dossiers/{{id}}/{{dossier_fils.maitrise_oeuvre}}">consulter</a></p>
+                        <p><a target="_blank"  href="{{path_for('file',{'id': id ,'filename': dossier_fils.maitrise_oeuvre })}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
-                      {% if error.maitrise_oeuvre %}
+                      {% if error.maitrise_oeuvre == 1 %}
                         <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                      {% if error.maitrise_oeuvre == 2 %}
+                        <span class='label label-danger'>fichier non PDF</span>
                       {% endif %}
                   </td>
                   <td width="25%" align="center">
@@ -107,11 +119,14 @@
                   <td width="75%">
                       <label for="plan_structure">fichier Plan de structure:</label><br>
                       {% if dossier_fils.plan_structure is not empty %}
-                        <p><a target="_blank"  href="../dossiers/{{id}}/{{dossier_fils.plan_structure}}">consulter</a></p>
+                        <p><a target="_blank"  href="{{path_for('file',{'id': id ,'filename': dossier_fils.plan_structure })}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
-                      {% if error.plan_structure %}
+                      {% if error.plan_structure == 1 %}
                         <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                      {% if error.plan_structure == 2 %}
+                        <span class='label label-danger'>fichier non PDF</span>
                       {% endif %}
                   </td>
                   <td width="25%" align="center">
@@ -127,11 +142,14 @@
                   <td width="75%">
                       <label for="note_pressentation">fichier Note de présentation:</label><br>
                       {% if dossier_fils.note_pressentation is not empty %}
-                        <p><a target="_blank"  href="../dossiers/{{id}}/{{dossier_fils.note_pressentation}}">consulter</a></p>
+                        <p><a target="_blank"  href="{{path_for('file',{'id': id ,'filename': dossier_fils.note_pressentation })}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
-                      {% if error.note_pressentation %}
+                      {% if error.note_pressentation == 1 %}
                         <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                      {% if error.note_pressentation == 2 %}
+                        <span class='label label-danger'>fichier non PDF</span>
                       {% endif %}
                   </td>
                   <td width="25%" align="center">
@@ -147,11 +165,14 @@
                   <td width="75%">
                       <label for="architecte">fichier Attestation Architecte:</label><br>
                       {% if dossier_fils.architecte is not empty %}
-                        <p><a target="_blank"  href="../dossiers/{{id}}/{{dossier_fils.architecte}}">consulter</a></p>
+                        <p><a target="_blank"  href="{{path_for('file',{'id': id ,'filename': dossier_fils.architecte })}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
-                      {% if error.architecte %}
+                      {% if error.architecte == 1 %}
                         <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                      {% if error.architecte == 2 %}
+                        <span class='label label-danger'>fichier non PDF</span>
                       {% endif %}
                   </td>
                   <td width="25%" align="center">
@@ -167,11 +188,14 @@
                   <td width="75%">
                       <label for="fiche_technique">fichier fiche technique:</label><br>
                       {% if dossier_fils.fiche_technique is not empty %}
-                        <p><a target="_blank"  href="../dossiers/{{id}}/{{dossier_fils.fiche_technique}}">consulter</a></p>
+                        <p><a target="_blank"  href="{{path_for('file',{'id': id ,'filename': dossier_fils.fiche_technique })}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
-                      {% if error.fiche_technique %}
+                      {% if error.fiche_technique == 1 %}
                         <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                      {% if error.fiche_technique == 2 %}
+                        <span class='label label-danger'>fichier non PDF</span>
                       {% endif %}
                   </td>
                   <td width="25%" align="center">
@@ -187,11 +211,14 @@
                   <td width="75%">
                       <label for="bureau_controle">fichier Attestation Bureau de controle:</label><br>
                       {% if dossier_fils.bureau_controle is not empty %}
-                        <p><a target="_blank"  href="../dossiers/{{id}}/{{dossier_fils.bureau_controle}}">consulter</a></p>
+                        <p><a target="_blank"  href="{{path_for('file',{'id': id ,'filename': dossier_fils.bureau_controle })}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
-                      {% if error.bureau_controle %}
+                      {% if error.bureau_controle == 1 %}
                         <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                      {% if error.bureau_controle == 2 %}
+                        <span class='label label-danger'>fichier non PDF</span>
                       {% endif %}
                   </td>
                   <td width="25%" align="center">
@@ -207,11 +234,14 @@
                   <td width="75%">
                       <label for="notice_securite">fichier Notice de sécurité incendie:</label><br>
                       {% if dossier_fils.notice_securite is not empty %}
-                        <p><a target="_blank"  href="../dossiers/{{id}}/{{dossier_fils.notice_securite}}">consulter</a></p>
+                        <p><a target="_blank"  href="{{path_for('file',{'id': id ,'filename': dossier_fils.notice_securite })}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
-                      {% if error.notice_securite %}
+                      {% if error.notice_securite == 1  %}
                         <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                      {% if error.notice_securite == 2 %}
+                        <span class='label label-danger'>fichier non PDF</span>
                       {% endif %}
                   </td>
                   <td width="25%" align="center">
@@ -227,11 +257,14 @@
                   <td width="75%">
                       <label for="contrat">fichier Contrat:</label><br>
                       {% if dossier_fils.contrat is not empty %}
-                        <p><a target="_blank"  href="../dossiers/{{id}}/{{dossier_fils.contrat}}">consulter</a></p>
+                        <p><a target="_blank"  href="{{path_for('file',{'id': id ,'filename': dossier_fils.contrat })}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
-                      {% if error.contrat %}
+                      {% if error.contrat == 1 %}
                         <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                      {% if error.contrat == 2 %}
+                        <span class='label label-danger'>fichier non PDF</span>
                       {% endif %}
                   </td>
                   <td width="25%" align="center">
@@ -243,20 +276,23 @@
                   </td>
                 </tr>
 
-                <tr class="{{dossier_fils.frais_autorisation ? 'bg-success':''}} {{error.frais_autorisation ? 'bg-danger':''}}">
+                <tr class="{{dossier_fils.cahier_chantier ? 'bg-success':''}} {{error.cahier_chantier ? 'bg-danger':''}}">
                   <td width="75%">
-                      <label for="frais_autorisation">fichier cahier de chantier:</label><br>
-                      {% if dossier_fils.frais_autorisation is not empty %}
-                        <p><a target="_blank"  href="../dossiers/{{id}}/{{dossier_fils.frais_autorisation}}">consulter</a></p>
+                      <label for="cahier_chantier">fichier cahier de chantier:</label><br>
+                      {% if dossier_fils.cahier_chantier is not empty %}
+                        <p><a target="_blank"  href="{{path_for('file',{'id': id ,'filename': dossier_fils.cahier_chantier })}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
-                      {% if error.frais_autorisation %}
+                      {% if error.cahier_chantier == 1 %}
                         <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                      {% if error.cahier_chantier == 2 %}
+                        <span class='label label-danger'>fichier non PDF</span>
                       {% endif %}
                   </td>
                   <td width="25%" align="center">
-                    <label class="btn btn-default" {{statut == 0 ? '':'disabled'}} for="frais_autorisation">
-                        <input id="frais_autorisation" type="file" name="test[frais_autorisation]" style="display:none;" {{statut == 0 ? '':'disabled'}} onchange="$('#upload-file-info-12').html($(this).val());">
+                    <label class="btn btn-default" {{statut == 0 ? '':'disabled'}} for="cahier_chantier">
+                        <input id="cahier_chantier" type="file" name="test[cahier_chantier]" style="display:none;" {{statut == 0 ? '':'disabled'}} onchange="$('#upload-file-info-12').html($(this).val());">
                          Charger ici
                     </label>
                     <span class='label label-default' id="upload-file-info-12"></span>
@@ -267,11 +303,14 @@
                   <td width="75%">
                       <label for="fiche_sapeurs">fichier fiche des sapeurs:</label><br>
                       {% if dossier_fils.fiche_sapeurs is not empty %}
-                        <p><a target="_blank"  href="../dossiers/{{id}}/{{dossier_fils.fiche_sapeurs}}">consulter</a></p>
+                        <p><a target="_blank"  href="{{path_for('file',{'id': id ,'filename': dossier_fils.fiche_sapeurs })}}">consulter</a></p>
                         <span class='label label-success'>Complet</span>
                       {% endif %}
-                      {% if error.fiche_sapeurs %}
+                      {% if error.fiche_sapeurs == 1 %}
                         <span class='label label-danger'>fichier manquant</span>
+                      {% endif %}
+                      {% if error.fiche_sapeurs == 2 %}
+                        <span class='label label-danger'>fichier non PDF</span>
                       {% endif %}
                   </td>
                   <td width="25%" align="center">
@@ -300,6 +339,7 @@
         $(document).ready(function(){
           $("table tbody tr").click(function(){
             $(this).find(".label-danger").each(function(){
+              $(this).parent().parent().css("background-color","white");
               $(this).hide("slow");
             });
           });

@@ -31,6 +31,11 @@
       return $this->hasOne('Test\Model\Etat');
     }
 
+    public function tracabilite()
+    {
+      return $this->hasMany('Test\Model\tracabilite');
+    }
+
     public function autorisation()
     {
       return $this->hasOne('Test\Model\Autorisation');

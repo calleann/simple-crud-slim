@@ -2,6 +2,21 @@
 
 {%block content%}
   <div class="col-lg-12">
+    {% if valide %}
+      <div class="row">
+        <div class="alert alert-success" role="alert">
+          <i>{{valide}}</i>
+        </div>
+      </div>
+    {% endif %}
+    {% if erreur %}
+      <div class="row">
+        <div class="alert alert-danger" role="alert">
+          <i>{{erreur}}</i>
+        </div>
+      </div>
+    {% endif %}
+
     {% if dossier.statut == 6 %}
       <div class="row">
         <div class="alert alert-info" role="alert">
@@ -14,11 +29,13 @@
         <div class="panel panel-default {{dossier.etat.valide == 1 ? 'panel-success':'panel-default'}}">
           <div class="panel-heading"><strong>Dossier N:{{dossier.user.id}} - {{dossier.etat.valide == 1 ? 'Etape Validée ':''}} </strong> </div>
           <div class="panel-body" style="display:{{dossier.statut == 1 or dossier.statut == 0 ? 'block':'none'}};">
-            <!-- <div class="row">
+            {% if dossier.statut == 0 %}
+            <div class="row">
               <div class="col-lg-offset-9 col-lg-3">
-                <button class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span>&nbsp; Notifier utilisateur</button>
+                <a href="{{path_for('demande.notification',{'id': dossier.id})}}"><button class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span>&nbsp; Notifier utilisateur</button></a>
               </div>
-            </div> -->
+            </div>
+            {% endif %}
             <div class="row">
               <label>&nbsp;Représentant</label> : {{dossier.user.name}}<br>
               <label>&nbsp;Société</label>:{{dossier.user.societe}}<br>
@@ -39,93 +56,119 @@
                 <!--1-->
                 <tr>
                   <td><label>Demande d'autorisation</label></td>
-                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.demande_autorisation}}">{{dossier.dossierable.demande_autorisation}}</a></td>
-                  <td><input type="text" name="" style="width:100%;" value=""></td>
-                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'demande_autorisation'})}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                  <td><a target="_blank" href="{{path_for('file',{'id': dossier.user.id ,'filename': dossier.dossierable.demande_autorisation })}}">{{dossier.dossierable.demande_autorisation}}</a></td>
+                  <form action="{{path_for('demande.delete',{'id': dossier.id,'key':'demande_autorisation'})}}"  onsubmit="return confirm('Do you really want to submit the form?');" method="post">
+                    <td><input type="text" name="note" style="width:100%;" value=""></td>
+                    <td><button type="submit" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></td>
+                  </form>
                 </tr>
                 <!--2-->
                 <tr>
                   <td><label>Fichier de propriété</label></td>
-                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.propriete}}">{{dossier.dossierable.propriete}}</a></td>
-                  <td><input type="text" name="" style="width:100%;" value=""></td>
-                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'propriete' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                  <td><a target="_blank" href="{{path_for('file',{'id': dossier.user.id ,'filename': dossier.dossierable.propriete })}}">{{dossier.dossierable.propriete}}</a></td>
+                  <form action="{{path_for('demande.delete',{'id': dossier.id,'key':'propriete'})}}"  onsubmit="return confirm('Do you really want to submit the form?');" method="post">
+                    <td><input type="text" name="note" style="width:100%;" value=""></td>
+                    <td><button type="submit" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></td>
+                  </form>
                 </tr>
                 <!--3-->
                 <tr>
                   <td><label>plan topographique</label></td>
-                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.plan_topographique}}">{{dossier.dossierable.plan_topographique}}</a></td>
-                  <td><input type="text" name="" style="width:100%;" value=""></td>
-                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'plan_topographique' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                  <td><a target="_blank" href="{{path_for('file',{'id': dossier.user.id ,'filename': dossier.dossierable.plan_topographique })}}">{{dossier.dossierable.plan_topographique}}</a></td>
+                  <form action="{{path_for('demande.delete',{'id': dossier.id,'key':'plan_topographique'})}}"  onsubmit="return confirm('Do you really want to submit the form?');" method="post">
+                    <td><input type="text" name="note" style="width:100%;" value=""></td>
+                    <td><button type="submit" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></td>
+                  </form>
                 </tr>
                 <!--4-->
                 <tr>
                   <td><label>maîtrise d'oeuvre</label></td>
-                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.maitrise_oeuvre}}">{{dossier.dossierable.maitrise_oeuvre}}</a></td>
-                  <td><input type="text" name="" style="width:100%;" value=""></td>
-                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'maitrise_oeuvre' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                  <td><a target="_blank" href="{{path_for('file',{'id': dossier.user.id ,'filename': dossier.dossierable.maitrise_oeuvre })}}">{{dossier.dossierable.maitrise_oeuvre}}</a></td>
+                  <form action="{{path_for('demande.delete',{'id': dossier.id,'key':'maitrise_oeuvre'})}}"  onsubmit="return confirm('Do you really want to submit the form?');" method="post">
+                    <td><input type="text" name="note" style="width:100%;" value=""></td>
+                    <td><button type="submit" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></td>
+                  </form>
                 </tr>
                 <!--5-->
                 <tr>
                   <td><label>plan de structure</label></td>
-                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.plan_structure}}">{{dossier.dossierable.plan_structure}}</a></td>
-                  <td><input type="text" name="" style="width:100%;" value=""></td>
-                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'plan_structure' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                  <td><a target="_blank" href="{{path_for('file',{'id': dossier.user.id ,'filename': dossier.dossierable.plan_structure })}}">{{dossier.dossierable.plan_structure}}</a></td>
+                  <form action="{{path_for('demande.delete',{'id': dossier.id,'key':'plan_structure'})}}"  onsubmit="return confirm('Do you really want to submit the form?');" method="post">
+                    <td><input type="text" name="note" style="width:100%;" value=""></td>
+                    <td><button type="submit" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></td>
+                  </form>
                 </tr>
                 <!--6-->
                 <tr>
                   <td><label>note de presentation</label></td>
-                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.note_pressentation}}">{{dossier.dossierable.note_pressentation}}</a></td>
-                  <td><input type="text" name="" style="width:100%;" value=""></td>
-                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'note_pressentation' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
-                </tr>
+                  <td><a target="_blank" href="{{path_for('file',{'id': dossier.user.id ,'filename': dossier.dossierable.note_pressentation })}}">{{dossier.dossierable.note_pressentation}}</a></td>
+                  <form action="{{path_for('demande.delete',{'id': dossier.id,'key':'note_pressentation'})}}"  onsubmit="return confirm('Do you really want to submit the form?');" method="post">
+                    <td><input type="text" name="note" style="width:100%;" value=""></td>
+                    <td><button type="submit" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></td>
+                  </form>
+                  </tr>
                 <!--7-->
                 <tr>
                   <td><label>architecte</label></td>
-                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.architecte}}">{{dossier.dossierable.architecte}}</a></td>
-                  <td><input type="text" name="" style="width:100%;" value=""></td>
-                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'architecte' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                  <td><a target="_blank" href="{{path_for('file',{'id': dossier.user.id ,'filename': dossier.dossierable.architecte })}}">{{dossier.dossierable.architecte}}</a></td>
+                  <form action="{{path_for('demande.delete',{'id': dossier.id,'key':'architecte'})}}"  onsubmit="return confirm('Do you really want to submit the form?');" method="post">
+                    <td><input type="text" name="note" style="width:100%;" value=""></td>
+                    <td><button type="submit" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></td>
+                  </form>
                 </tr>
                 <!--8-->
                 <tr>
                   <td><label>fiche technique</label></td>
-                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.fiche_technique}}">{{dossier.dossierable.fiche_technique}}</a></td>
-                  <td><input type="text" name="" style="width:100%;" value=""></td>
-                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'fiche_technique' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                  <td><a target="_blank" href="{{path_for('file',{'id': dossier.user.id ,'filename': dossier.dossierable.fiche_technique })}}">{{dossier.dossierable.fiche_technique}}</a></td>
+                  <form action="{{path_for('demande.delete',{'id': dossier.id,'key':'fiche_technique'})}}"  onsubmit="return confirm('Do you really want to submit the form?');" method="post">
+                    <td><input type="text" name="note" style="width:100%;" value=""></td>
+                    <td><button type="submit" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></td>
+                  </form>
                 </tr>
                 <!--9-->
                 <tr>
                   <td><label>bureau de controle</label></td>
-                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.bureau_controle}}">{{dossier.dossierable.bureau_controle}}</a></td>
-                  <td><input type="text" name="" style="width:100%;" value=""></td>
-                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'bureau_controle' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                  <td><a target="_blank" href="{{path_for('file',{'id': dossier.user.id ,'filename': dossier.dossierable.bureau_controle })}}">{{dossier.dossierable.bureau_controle}}</a></td>
+                  <form action="{{path_for('demande.delete',{'id': dossier.id,'key':'bureau_controle'})}}"  onsubmit="return confirm('Do you really want to submit the form?');" method="post">
+                    <td><input type="text" name="note" style="width:100%;" value=""></td>
+                    <td><button type="submit" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></td>
+                  </form>
                 </tr>
                 <!--10-->
                 <tr>
                   <td><label>notice de sécurité</label></td>
-                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.notice_securite}}">{{dossier.dossierable.notice_securite}}</a></td>
-                  <td><input type="text" name="" style="width:100%;" value=""></td>
-                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'notice_securite' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                  <td><a target="_blank" href="{{path_for('file',{'id': dossier.user.id ,'filename': dossier.dossierable.notice_securite })}}">{{dossier.dossierable.notice_securite}}</a></td>
+                  <form action="{{path_for('demande.delete',{'id': dossier.id,'key':'notice_securite'})}}"  onsubmit="return confirm('Do you really want to submit the form?');" method="post">
+                    <td><input type="text" name="note" style="width:100%;" value=""></td>
+                    <td><button type="submit" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></td>
+                  </form>
                 </tr>
                 <!--11-->
                 <tr>
                   <td><label>contrat</label></td>
-                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.contrat}}">{{dossier.dossierable.contrat}}</a></td>
-                  <td><input type="text" name="" style="width:100%;" value=""></td>
-                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'contrat' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                  <td><a target="_blank" href="{{path_for('file',{'id': dossier.user.id ,'filename': dossier.dossierable.contrat })}}">{{dossier.dossierable.contrat}}</a></td>
+                  <form action="{{path_for('demande.delete',{'id': dossier.id,'key':'contrat'})}}"  onsubmit="return confirm('Do you really want to submit the form?');" method="post">
+                    <td><input type="text" name="note" style="width:100%;" value=""></td>
+                    <td><button type="submit" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></td>
+                  </form>
                 </tr>
                 <!--12-->
                 <tr>
                   <td><label>cahier de chantier</label></td>
-                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.frais_autorisation}}">cahier_chantier_47.pdf</a></td>
-                  <td><input type="text" name="" style="width:100%;" value=""></td>
-                  <td><a href="{{path_for('demande.delete',{'id': dossier.id,'key':'frais_autorisation' })}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                  <td><a target="_blank" href="{{path_for('file',{'id': dossier.user.id ,'filename': dossier.dossierable.cahier_chantier })}}">{{dossier.dossierable.cahier_chantier}}</a></td>
+                  <form action="{{path_for('demande.delete',{'id': dossier.id,'key':'cahier_chantier'})}}"  onsubmit="return confirm('Do you really want to submit the form?');" method="post">
+                    <td><input type="text" name="note" style="width:100%;" value=""></td>
+                    <td><button type="submit" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></td>
+                  </form>
                 </tr>
                 <!--13-->
                 <tr>
                   <td><label>fiche des sapeurs</label></td>
-                  <td><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.fiche_sapeurs}}">{{dossier.dossierable.fiche_sapeurs}}</a></td>
-                  <td><input type="text" name="" style="width:100%;" value=""></td>
-                  <td><a href="{{path_for('demande.delete',{'id': dossier.id, 'key':'fiche_sapeurs'})}}" onclick="return confirm('Voulez vous retirer ce document du dossier?');"><button type="button" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></a></td>
+                  <td><a target="_blank" href="{{path_for('file',{'id': dossier.user.id ,'filename': dossier.dossierable.fiche_sapeurs })}}">{{dossier.dossierable.fiche_sapeurs}}</a></td>
+                  <form action="{{path_for('demande.delete',{'id': dossier.id,'key':'fiche_sapeurs'})}}"  onsubmit="return confirm('Do you really want to submit the form?');" method="post">
+                    <td><input type="text" name="note" style="width:100%;" value=""></td>
+                    <td><button type="submit" class="btn btn-danger" {{dossier.etat.valide == 1 ? 'disabled':''}} >Rejeter</button></td>
+                  </form>
                 </tr>
                 <tr>
                   <td colspan="4" align="center">
@@ -185,7 +228,7 @@
                   <div class="form-group">
                     <label for="nom_fichier">Avis de la protection civile:&nbsp;</label>
                     {% if dossier.dossierable.protection_civile.nom_fichier is not empty %}
-                        <a  href="../../../dossiers/{{dossier.user.id}}/{{dossier.dossierable.protection_civile.nom_fichier}}" target="_blank">Consulter le document chargé</a>
+                        <a  href="{{path_for('file',{'id': dossier.user.id ,'filename': dossier.dossierable.protection_civile.nom_fichier })}}" target="_blank">Consulter le document chargé</a>
                     {% endif %}<br>
                     <label class="btn btn-default" for="nom_fichier" {{dossier.etat.accuse  ==  1 ? '':'disabled'}}{{dossier.etat.protection_civile  ==  1 ? 'disabled':''}}>
                       <input id="nom_fichier" type="file" name="nom_fichier" style="display:none;"  {{dossier.etat.accuse  ==  1 ? '':'disabled'}} {{dossier.etat.protection_civile  ==  1 ? 'disabled':''}} onchange="$('#upload-file-info-1').html($(this).val());">
@@ -216,7 +259,7 @@
                 <div class="form-group">
                   <label for="nom_fichier">Fichier des frais de paiement:&nbsp;</label>
                   {% if dossier.etat.paiement  == 1 %}
-                    <a href="../../../dossiers/{{dossier.user.id}}/frais_de_paiement_{{dossier.user.id}}.pdf" target="_blank">Consulter le document chargé</a>
+                    <a href="{{path_for('file',{'id': dossier.user.id ,'filename': "frais_de_paiement_"~dossier.user.id~".pdf" })}}" target="_blank">Consulter le document chargé</a>
                   {% endif %}
                   <br>
                   <label class="btn btn-default" for="fichier_paiement" {{dossier.etat.paiement == 1 ? 'disabled':''}}>
@@ -241,7 +284,7 @@
           <div class="panel-body" style="display:{{dossier.statut == 5 ? 'block':'none'}};">
             <h4 style="text-align:center;"><strong>Géneration d'autorisation</strong></h4>
             {% if dossier.etat.cloture == 1 %}
-              <h5 style="text-align:center;"><a target="_blank" href="../../../dossiers/{{dossier.user.id}}/autorisation_commencement_{{dossier.user.id}}.pdf">Click me</a></h5>
+              <h5 style="text-align:center;"><a target="_blank" href="{{path_for('file',{'id': dossier.user.id ,'filename': "autorisation_commencement_"~dossier.user.id~".pdf" })}}">Click me</a></h5>
             {% endif %}
             <!-- <a href="{{path_for('demande.test',{'id':dossier.id})}}">Click me senpai</a> -->
             <table class="table">

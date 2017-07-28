@@ -11,12 +11,34 @@
   use Test\Model\PDF;
   use Test\Model\Autorisation;
   use Test\Model\Notification;
+  use Test\Model\tracabilite;
   use Respect\Validation\Validator as v;
   /**
    *
    */
   class DemandeController extends Controller
   {
+    public function getFile($request,$response)
+    {
+      $id = $request->getAttribute('id');
+
+      if(isset($_SESSION['id']) && isset($_SESSION['type']) && $_SESSION['type'] == "admin" || $id  == $_SESSION['id']){
+        $filename = $request->getAttribute('filename');
+        echo $filename;
+        $file =  __DIR__.'/../../../dossiers/'.$id.'/'.$filename;
+        if(file_exists($file))
+        {
+          $response = $this->response->withHeader( 'Content-type', 'application/pdf' );
+          readfile($file);
+          return $response;
+        }
+        return $this->view->render($response,'templates/404.html.twig');
+      }
+      else{
+        return $this->view->render($response,'templates/405.html.twig');
+      }
+
+    }
     public function getTest($request,$response)
     {
 
@@ -24,14 +46,8 @@
     }
     public function getTest2($request,$response)
     {
-      $pdf = new PDF();
-      $pdf->AliasNbPages();
-
-      $pdf->setBodyLine(206,"fish and shrimps",date("d/m/Y"),date("d/m/Y"),15);
-      $pdf->CorpsRules();
-      $response = $this->response->withHeader( 'Content-type', 'application/pdf' );
-      $response->write( $pdf->Output('Not so cool pdf', 'S',true));
-      return $response;
+      $user = User::where('selector',$request->getAttribute('selector'))->first();
+      echo json_encode($user);
     }
     //
     // public function getAllDemandes($request,$response)
@@ -141,7 +157,7 @@
         // echo $demande[$key]."<br>";
         if ($value->getClientFilename()=="") {
           if (empty($dossier_fils[$key])) {
-            $error[$key] = "ping error ".$key;
+            $error[$key] = 1;
           }
           else {
             echo "that's okay everything is fine bruh! <br>";
@@ -150,7 +166,11 @@
         }
         else{
           $filename=$value->getClientFilename();
-          $extension_upload = strtolower(substr(strrchr($filename, '.'),1)) ;
+          $extension_upload = strtolower(substr(strrchr($filename, '.'),1));
+          if($extension_upload != "pdf"){
+            $error[$key] = 2;
+            continue;
+          }
           $newFilename = $key.'_'.$_SESSION['id'].'.'.$extension_upload;
           // echo $value->getSize(); don't forget to check the size
           $value->moveTo($dir.'/'.$newFilename);

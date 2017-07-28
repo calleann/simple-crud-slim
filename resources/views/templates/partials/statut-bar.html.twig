@@ -56,7 +56,7 @@
                   <th>Avis de la protection civile</th>
                   <td>{% if etat.protection_civile == 1 %}<span style="color:green;"><strong>Valide</strong></span>{% elseif statut == -4 %}<span style="color:red;"><strong>Rejeté</strong></span>{% else %}<span style="color:yellow;"><strong>En attente</strong></span>{% endif %}</td>
                   <td>{{ etat.protection_civile == 1 or statut == -4 ? user.dossier.dossierable.protection_civile.note:"" }}</td>
-                  <td>{% if etat.protection_civile == 1 or statut == -4 %}<a target="_blank" href="../dossiers/{{user.id}}/{{ user.dossier.dossierable.protection_civile.nom_fichier}}">Consulter</a>{% endif %}</td>
+                  <td>{% if etat.protection_civile == 1 or statut == -4 %}<a target="_blank" href="{{path_for('file',{'id': user.id ,'filename': user.dossier.dossierable.protection_civile.nom_fichier })}}">Consulter</a>{% endif %}</td>
                 </tr>
                 <tr>
                   <th>Frais d'autorisation</th>
@@ -68,7 +68,7 @@
                   <th>Génération de fichier d'autorisation</th>
                   <td>{% if etat.cloture == 1 %}<span style="color:green;"><strong>Valide</strong></span>{% else %}<span style="color:yellow;"><strong>En attente</strong></span>{% endif %}</td>
                   <td>{{ etat.cloture == 1 ? "le fichier d'autorisation a été généré":"" }}</td>
-                  <td>{% if etat.cloture == 1 %}<a target="_blank" href="../dossiers/{{user.id}}/autorisation_commencement_{{user.id}}.pdf">Consulter</a>{% endif %}</td>
+                  <td>{% if etat.cloture == 1 %}<a target="_blank" href="{{path_for('file',{'id': user.id ,'filename': "autorisation_commencement_"~user.id~".pdf" })}}">Consulter</a>{% endif %}</td>
                 </tr>
             </tbody>
           </table>

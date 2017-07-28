@@ -1,0 +1,46 @@
+{% extends 'templates/app.html.twig' %}
+
+{% block content %}
+  <div class="col-lg-12">
+    <div class="col-lg-10">
+      <h1>Traçabilité</h1>
+      <div class="row">
+        <table class="table table-striped">
+          <thead>
+            <th>N</th>
+            <th>Admin</th>
+            <th>Dossier</th>
+            <th>Statut</th>
+            <th>Log</th>
+            <th>timestamp</th>
+            <th></th>
+          </thead>
+          <tbody>
+            {% for log in logs %}
+                <tr>
+                  <td>{{log.id}}</td>
+                  <td>{{log.user.name}}</td>
+                  <td>{{log.dossier.id}}</td>
+                  <td>{{log.update_statut}}</td>
+                  <td>{{log.log}}</td>
+                  <td>{{log.created_at}}</td>
+                  <td><a href="{{path_for('admin.log',{'id': log.id })}}">aaa</a></td>
+                </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+  $(document).ready(function () {
+    $('.table').dataTable({
+      // "paging":   ,
+      "info":   false,
+      "bLengthChange": false,
+      "pageLength" : 10,
+      "aaSorting" : [6,'desc']
+    });
+  });
+  </script>
+{% endblock %}

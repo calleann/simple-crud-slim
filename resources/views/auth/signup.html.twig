@@ -6,36 +6,35 @@
       <div class="panel panel-default">
         <div class="panel-heading"><strong>Inscription</strong></div>
         <div class="panel-body">
-           <!-- {{error | json_encode }}  -->
           <form class="form-signup" action="{{path_for('auth.signup')}}" method="post">
             <div class="form-group {{error.societe ? 'has-error':''}}">
               <label for="societe">Société:</label>
-              <input type="text" name="societe" class="form-control" id="societe">
+              <input type="text" name="societe" class="form-control" id="societe" value="{{old.societe}}">
               {% if error.societe %}<span class="help-block" style="font-size:0.7em">{{error.societe | first}}</span>{% endif %}
             </div>
             <div class="form-group {{error.name ? 'has-error':''}}">
               <label for="name">Représentant (Nom complet):</label>
-              <input type="text" name="name" class="form-control" id="name">
+              <input type="text" name="name" class="form-control" id="name" value="{{old.name}}">
               {% if error.name %}<span class="help-block" style="font-size:0.7em">{{error.name | first}}</span>{% endif %}
             </div>
             <div class="form-group {{error.cin ? 'has-error':''}}">
               <label for="cin">Numéro d'identification:</label>
-              <input type="text" name="cin" class="form-control" id="cin">
+              <input type="text" name="cin" class="form-control" id="cin" value="{{old.cin}}">
               {% if error.cin %}<span class="help-block" style="font-size:0.7em">{{error.cin | first}}</span>{% endif %}
             </div>
             <div class="form-group {{error.num_tel ? 'has-error':''}}">
               <label for="num_tel">Numéro de téléphone:</label>
-              <input type="text" name="num_tel" class="form-control" id="num_tel">
+              <input type="text" name="num_tel" class="form-control" id="num_tel" value="{{old.num_tel}}">
               {% if error.num_tel %}<span class="help-block" style="font-size:0.7em">{{error.num_tel | first}}</span>{% endif %}
             </div>
             <div class="form-group">
               <label for="type">Nature du dossier:&nbsp;</label>
-              <label class="radio-inline"><input type="radio" name="type" value="construire" checked="checked">Permis construction</label>
-              <label class="radio-inline"><input type="radio" name="type" value="exploitation">Permis Exploitation</label>
+              <label class="radio-inline"><input type="radio" name="type" value="construire" {{old.type == "construire" ? 'checked':''}} {{old.type is empty ? 'checked':''}}>Permis construction</label>
+              <label class="radio-inline"><input type="radio" name="type" value="exploitation" {{old.type == "exploitation" ? 'checked':''}}>Permis Exploitation</label>
             </div>
             <div class="form-group {{error.email ? 'has-error':''}}">
               <label for="email">Adresse Email:</label>
-              <input type="text" name="email" class="form-control" id="email" placeholder="your@domain.com">
+              <input type="text" name="email" class="form-control" id="email" placeholder="your@domain.com" value="{{old.email}}">
               {% if error.email %}<span class="help-block" style="font-size:0.7em">{{error.email | first}}</span>{% endif %}
             </div>
             <div class="form-group {{error.password ? 'has-error':''}}">

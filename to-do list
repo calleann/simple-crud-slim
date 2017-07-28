@@ -7,14 +7,27 @@ Front Office:
 
 ---------------------------
 Back Office:
-+Work on the process of validation
+
 +Work on the process of updating the status
 +Statistics
 
 
 +++++++++++++++
 + Work on the paiement plus generation du fichier de cloture
-++++++++++++++++
++++++++++++++++
 fpdf works(-ish) +add necessary information
 
 Work on the notifications
+----------------------------------
++New ones
+
+Check delete process
+Email notificatons
+
+
+--------------------------------
+view for a single log
+
+profil view
+
+Code refractoring: Implement the new method (view file) in the app

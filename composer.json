@@ -5,7 +5,9 @@
         "illuminate/database": "^5.4",
         "slim/flash": "^0.2.0",
         "respect/validation": "^1.1",
-        "itbz/fpdf": "^1.7"
+        "itbz/fpdf": "^1.7",
+        "phpmailer/phpmailer": "^5.2",
+        "defuse/php-encryption": "^2.1"
     },
     "autoload" : {
       "psr-4":{

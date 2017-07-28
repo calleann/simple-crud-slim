@@ -17,6 +17,7 @@
       'num_tel',
       'cin',
       'password',
+      'selector',
       'type',
       'num_decision',
       'date_decision',

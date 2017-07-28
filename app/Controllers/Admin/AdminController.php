@@ -11,11 +11,13 @@
   use Test\Model\PDF;
   use Test\Model\Autorisation;
   use Test\Model\Notification;
+  use Test\Model\tracabilite;
   use Respect\Validation\Validator as v;
 
 
   class AdminController extends Controller
   {
+
 
     public function getHello($request,$response)
     {
@@ -62,6 +64,14 @@
         if(!empty($messages['test'])){
           $env->addGlobal('message',"shit is deleted");
         }
+        if(!empty($messages['erreur'])){
+          // var_dump($messages['erreur']);
+          // die();
+          $env->addGlobal('erreur',$messages['erreur'][0]);
+        }
+        if(!empty($messages['valide'])){
+          $env->addGlobal('valide',$messages['valide'][0]);
+        }
         return $this->view->render($response,'admin/dossier-soumis.html.twig');
       }
       else
@@ -75,28 +85,53 @@
       if(isset($_SESSION['type']) && $_SESSION['type'] === "admin")
       {
         $dossier = Dossier::find($request->getParam('id'));
-        $dossier->statut = 2;
-        $dossier->save();
-        if($dossier->etat === null)
-        {
-          $etat = Etat::create([
-            'valide' => 1
-          ]);
-          $dossier->etat()->save($etat);
+
+
+        $admin = User::find($_SESSION['id']);
+
+        //Email notification
+        $this->mail->addAddress('anas.riyuu@gmail.com','chafik anasse');//switch it back to the mail address
+        $this->mail->Subject  = utf8_decode("Dossier N:".$dossier->user->id." Validation du dossier");
+        $this->mail->Body     = utf8_decode("Votre dossier a été validé par l'administration de la Zone Franche.Veuillez se connecter sur la plateforme pour se renseigner sur les étapes du traitement");
+
+
+        if(!$this->mail->send()) {
+          $this->flash->addMessage('erreur',"Erreur d'envoi de mail de notification");
+          echo 'Message was not sent.';
+          echo 'Mailer error: ' . $this->mail->ErrorInfo;
+        } else {
+          $this->flash->addMessage('valide',utf8_decode("Message envoyé"));
+          echo 'Message has been sent.';
+          $dossier->statut = 2;
+          $dossier->save();
+
+          if($dossier->etat === null)
+          {
+            $etat = Etat::create([
+              'valide' => 1
+            ]);
+            $dossier->etat()->save($etat);
+          }
+          else {
+            $etat = $dossier->etat;
+            $etat->valide = 1;
+            $etat->save();
+          }
+          //notifications
+          $delete_notification = Notification::where('user_id',$dossier->user->id)->delete();
+          $notification = new notification();
+          $notification->dossier_statut = $dossier->statut;
+          $notification->type = "success";
+          $notification->message = "Votre dossier a ete valide par l'administrateur";
+          $user = $dossier->user;
+          $user->notifications()->save($notification);
+          //log
+          $msg = "Validation des documents";
+          $trac = new tracabilite;
+          $trac->write_log($dossier->statut,$msg);
+          $trac->save_entities($admin,$dossier);
+          $trac->save();
         }
-        else {
-          $etat = $dossier->etat;
-          $etat->valide = 1;
-          $etat->save();
-        }
-        //notifications
-        $delete_notification = Notification::where('user_id',$dossier->user->id)->delete();
-        $notification = new notification();
-        $notification->dossier_statut = $dossier->statut;
-        $notification->type = "success";
-        $notification->message = "Votre dossier a ete valide par l'administrateur";
-        $user = $dossier->user;
-        $user->notifications()->save($notification);
 
         return $response->withRedirect($this->router->pathFor('admin.dossier',array('id'=>$dossier->id,'type'=>$dossier->user->type)));
         echo $request->getParam('id');
@@ -111,20 +146,44 @@
     {
       if(isset($_SESSION['type']) && $_SESSION['type'] === "admin")
       {
+        $admin = User::find($_SESSION['id']);
         $dossier = Dossier::find($request->getParam('id'));
-        $dossier->statut = 3;
-        $etat = $dossier->etat;
-        $etat->accuse = 1;
-        $etat->save();
-        $dossier->save();
-        //notifications
-        $delete_notification = Notification::where('user_id',$dossier->user->id)->delete();
-        $notification = new notification();
-        $notification->dossier_statut = $dossier->statut;
-        $notification->type = "success";
-        $notification->message = "Nous avons accuse les fichiers necessaires";
-        $user = $dossier->user;
-        $user->notifications()->save($notification);
+        //Email notification
+        $this->mail->addAddress('anas.riyuu@gmail.com','chafik anasse');//switch it back to the mail address
+        $this->mail->Subject  = utf8_decode("Dossier N:".$dossier->user->id." Accusé de réception des documents");
+        $this->mail->Body     = utf8_decode("Nous avons bien reçus vos documents,la protection civile traitera votre demande.Vous receverez une réponse dans la plateforme à l'égard de la décision prise.");
+
+
+        if(!$this->mail->send()) {
+          $this->flash->addMessage('erreur',"Erreur d'envoi de mail de notification");
+          echo 'Message was not sent.';
+          echo 'Mailer error: ' . $this->mail->ErrorInfo;
+        } else {
+          $this->flash->addMessage('valide',utf8_decode("Message envoyé"));
+          echo 'Message has been sent.';
+
+          $dossier->statut = 3;
+          $etat = $dossier->etat;
+          $etat->accuse = 1;
+          $etat->save();
+          $dossier->save();
+          //notifications
+          $delete_notification = Notification::where('user_id',$dossier->user->id)->delete();
+          $notification = new notification();
+          $notification->dossier_statut = $dossier->statut;
+          $notification->type = "success";
+          $notification->message = "Nous avons accuse les fichiers necessaires";
+          $user = $dossier->user;
+          $user->notifications()->save($notification);
+
+          //log
+          $msg = "Accusé de la réception des documents auprès de ".$user->name;
+          $trac = new tracabilite;
+          $trac->write_log($dossier->statut,$msg);
+          $trac->save_entities($admin,$dossier);
+          $trac->save();
+        }
+
 
         return $response->withRedirect($this->router->pathFor('admin.dossier',array('id'=>$dossier->id,'type'=>$dossier->user->type)));
       }
@@ -138,6 +197,7 @@
     {
       if(isset($_SESSION['type']) && $_SESSION['type'] === "admin")
       {
+        $admin = User::find($_SESSION['id']);
         $dossier = Dossier::find($request->getParam('id'));
         echo json_encode($dossier->dossierable);
 
@@ -180,6 +240,10 @@
           }
           if($request->getParam('avis') === "favorable")
           {
+            $this->mail->addAddress('anas.riyuu@gmail.com','chafik anasse');//switch it back to the mail address
+            $this->mail->Subject  = utf8_decode("Dossier N:".$dossier->user->id." Avis de la protection civile");
+            $this->mail->Body     = utf8_decode("La protection civile a accordé un avis favorable à l'égard de votre demande.Veuillez se présenter à l'administration avec les frais d'autorisation ainsi que le reste des documents");
+
             $dossier->statut = 4;
             $dossier->save();
             $etat = $dossier->etat;
@@ -193,9 +257,21 @@
             $notification->message = "Vous avez recu un avis favorable de la part de la protection civile";
             $user = $dossier->user;
             $user->notifications()->save($notification);
+
+            //log
+            $msg = "Avis favorable de la protection civile";
+            $trac = new tracabilite;
+            $trac->write_log($dossier->statut,$msg);
+            $trac->save_entities($admin,$dossier);
+            $trac->save();
+
           }
           else
           {
+            $this->mail->addAddress('anas.riyuu@gmail.com','chafik anasse');//switch it back to the mail address
+            $this->mail->Subject  = utf8_decode("Dossier N:".$dossier->user->id." Avis de la protection civile ");
+            $this->mail->Body     = utf8_decode("Votre demande a été rejeté par les services de la protection civile....");
+
             $dossier->statut = -4;
             $dossier->save();
             //notification
@@ -206,8 +282,24 @@
             $notification->message = "Votre dossier a ete rejete par la protection civile";
             $user = $dossier->user;
             $user->notifications()->save($notification);
+
+            //log
+            $msg = "Avis défavorable de la protection civile";
+            $trac = new tracabilite;
+            $trac->write_log($dossier->statut,$msg);
+            $trac->save_entities($admin,$dossier);
+            $trac->save();
           }
           $dossier->dossierable->protection_civile()->save($protection_civile);
+          if(!$this->mail->send()) {
+            $this->flash->addMessage('erreur',"Erreur d'envoi de mail de notification");
+            echo 'Message was not sent.';
+            echo 'Mailer error: ' . $this->mail->ErrorInfo;
+          } else {
+            $this->flash->addMessage('valide',utf8_decode("Message envoyé"));
+            echo 'Message has been sent.';
+          }
+
           echo 'ok';
           return $response->withRedirect($this->router->pathFor('admin.dossier',array('id'=>$dossier->id,'type'=>$dossier->user->type)));
         }
@@ -222,7 +314,7 @@
     {
       if(isset($_SESSION['type']) && $_SESSION['type'] === "admin")
       {
-
+        $admin = User::find($_SESSION['id']);
         $dossier = Dossier::find($request->getParam('id'));
         $dir = __DIR__.'/../../../dossiers/'.$dossier->user->id;
         echo $dir ;
@@ -254,8 +346,29 @@
             $notification->message = "Nous avons bien recu le paiement";
             $user = $dossier->user;
             $user->notifications()->save($notification);
+
+            //log
+            $msg = "Accusé de réception des frais d'autorisation";
+            $trac = new tracabilite;
+            $trac->write_log($dossier->statut,$msg);
+            $trac->save_entities($admin,$dossier);
+            $trac->save();
           }
         }
+        $this->mail->addAddress('anas.riyuu@gmail.com','chafik anasse');//switch it back to the mail address
+        $this->mail->Subject  = utf8_decode("Dossier N:".$dossier->user->id." Accusé des frais d'autorisation");
+        $this->mail->Body     = utf8_decode("Votre fichier d'autorisation a été généré.");
+
+        if(!$this->mail->send()) {
+          $this->flash->addMessage('erreur',"Erreur d'envoi de mail de notification");
+          echo 'Message was not sent.';
+          echo 'Mailer error: ' . $this->mail->ErrorInfo;
+        } else {
+          $this->flash->addMessage('valide',utf8_decode("Message envoyé"));
+          echo 'Message has been sent.';
+        }
+
+
         echo json_encode($dossier->user);
         return $response->withRedirect($this->router->pathFor('admin.dossier',array('id'=>$dossier->id,'type'=>$dossier->user->type)));
       }
@@ -267,6 +380,7 @@
 
     public function postAccuseCloture($request,$response)
     {
+      $admin = User::find($_SESSION['id']);
       $dossier = Dossier::find($request->getAttribute('id'));
       $validation = $this->validator->validate($request,[
         'lot'=> v::noWhitespace()->notEmpty(),
@@ -282,7 +396,7 @@
       $dossier->autorisation()->save($autorisation);
       $pdf = new PDF;
       $pdf->AliasNbPages();
-      $pdf->setBodyLine($dossier->user->id,$dossier->user->societe,date('d/m/Y',$date_commencement),date("d/m/Y"),$request->getParam('lot'));
+      $pdf->setBodyLine($dossier->user->num_decision,$dossier->user->societe,date('d/m/Y',$date_commencement),date("d/m/Y"),$request->getParam('lot'));
       $pdf->CorpsRules();
       if($pdf->savePdflocation($dossier->user->id))
       {
@@ -299,6 +413,28 @@
         $notification->message = "Votre dossier a ete traite avec succes,votre autorisation a ete genere";
         $user = $dossier->user;
         $user->notifications()->save($notification);
+
+        //log
+        $msg = "génération d'autorisation de commencement des travaux :".$user->societe;
+        $trac = new tracabilite;
+        $trac->write_log($dossier->statut,$msg);
+        $trac->save_entities($admin,$dossier);
+        $trac->save();
+
+        $this->mail->addAddress('anas.riyuu@gmail.com','chafik anasse');//switch it back to the mail address
+        $this->mail->Subject  = utf8_decode("Dossier N:".$dossier->user->id." Géneration d'autorisation");
+        $this->mail->Body     = utf8_decode("Nous avons accusé les frais d'autorisation concernant votre demande.");
+
+        if(!$this->mail->send()) {
+          $this->flash->addMessage('erreur',"Erreur d'envoi de mail de notification");
+          echo 'Message was not sent.';
+          echo 'Mailer error: ' . $this->mail->ErrorInfo;
+        } else {
+          $this->flash->addMessage('valide',utf8_decode("Message envoyé"));
+          echo 'Message has been sent.';
+        }
+
+
         //redirect
         $response = $this->response->withHeader( 'Content-type', 'application/pdf' );
         $response->write( $pdf->Output('My cool PDF', 'S',true));
@@ -310,7 +446,9 @@
 
     public function getDelete($request,$response)
     {
+      $admin = User::find($_SESSION['id']);
       //alimenter une table de notifications
+      $nomclature_construction = $this->nomclature_construction;
       $dossier = Dossier::find($request->getAttribute('id'));
       $documents = $dossier->dossierable;
       $key = $request->getAttribute('key');
@@ -323,9 +461,17 @@
       $notification = new notification();
       $notification->dossier_statut = $dossier->statut;
       $notification->type = "danger";
-      $notification->message = "le fichier :".$key." a ete rejete";
+      $notification->message = "le fichier : ".$nomclature_construction[$key]." a été rejeté en raison de : ".$request->getParam('note');
       $user = $dossier->user;
       $user->notifications()->save($notification);
+
+      //log
+      $msg = $notification->message;
+      $trac = new tracabilite;
+      $trac->write_log($dossier->statut,$msg);
+      $trac->save_entities($admin,$dossier);
+      $trac->save();
+
 
       echo "yay<br>";
       echo json_encode($dossier)."<br>";
@@ -343,6 +489,65 @@
         $env = $this->view->getEnvironment();
         $env->addGlobal('users',$users);
         return $this->view->render($response,'admin/admin-users.html.twig');
+      }
+      else
+      {
+        return $response->withRedirect($this->router->pathFor('home'));
+      }
+    }
+
+    public function PushNotifications($request,$response)
+    {
+      echo $request->getAttribute('id');
+      $dossier = Dossier::find($request->getAttribute('id'));
+      $notifications = Notification::where('user_id',$dossier->user->id)->get();
+      echo json_encode($notifications);
+      echo "<br>";
+      $message = "<ul>";
+      foreach($notifications as $notification) {
+        $message .= "<li>".$notification->message."</li>";
+      }
+      $message .= "</ul>";
+      echo $message;
+
+      $this->mail->addAddress('anas.riyuu@gmail.com','chafik anasse');//switch it back to the mail address
+      $this->mail->Subject  = utf8_decode("Dossier N:".$dossier->user->id." documents refusés");
+      $this->mail->Body     = $message;
+      $this->mail->IsHTML(true);
+
+      if(!$this->mail->send()) {
+        $this->flash->addMessage('erreur',"Erreur d'envoi de mail de notification");
+        echo 'Message was not sent.';
+        echo 'Mailer error: ' . $this->mail->ErrorInfo;
+      } else {
+        $this->flash->addMessage('valide',utf8_decode("Message envoyé"));
+        echo 'Message has been sent.';
+      }
+      return $response->withRedirect($this->router->pathFor('admin.dossier',array('id'=>$dossier->id,'type'=>$dossier->user->type)));
+
+    }
+
+    public function getLogs($request,$response)
+    {
+      if (isset($_SESSION['type']) && $_SESSION['type'] === "admin")
+      {
+        $logs = tracabilite::orderBy('created_at','DESC')->get();
+        $env = $this->view->getEnvironment();
+        $env->addGlobal('logs',$logs);
+        return $this->view->render($response,'admin/logs.html.twig');
+      }
+      else
+      {
+        return $response->withRedirect($this->router->pathFor('home'));
+      }
+    }
+    public function getLog($request,$response)
+    {
+      if (isset($_SESSION['type']) && $_SESSION['type'] === "admin")
+      {
+        $log = tracabilite::find($request->getAttribute('id'));
+        echo json_encode($log);
+        echo "yay";
       }
       else
       {
